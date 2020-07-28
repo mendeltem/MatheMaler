@@ -41,7 +41,7 @@ namespace Picasso
 
         public float width;
 
-        private bool lastPrimary_ButtonState = false;
+
         
 
         public PrimaryButtonEvent primaryButtonPress;
@@ -55,7 +55,6 @@ namespace Picasso
 
         [Tooltip("Event when the button is released")]
         public UnityEvent OnRelease;
-
         
         // to check whether it's being pressed
         public bool IsPressed { get; private set; }
