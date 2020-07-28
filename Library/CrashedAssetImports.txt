@@ -1,1 +1,0 @@
-Assets/Prefabs/coordinate_x_y.blend
