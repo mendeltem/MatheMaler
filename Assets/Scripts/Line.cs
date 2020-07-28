@@ -28,7 +28,7 @@ namespace Picasso
 
 		public int positionCount = 0;
 
-		//public GameObject coord;
+		public GameObject coord;
 		
 		public GameObject player;
 
@@ -38,7 +38,7 @@ namespace Picasso
 		
 		void Start()
 		{
-			//coord = GameObject.FindWithTag("coord");
+			coord = GameObject.FindWithTag("coord");
 			
 			//player=coord.transform.parent.gameObject;
 			
@@ -72,9 +72,9 @@ namespace Picasso
             var P2 = end.position;
             
             //position_x = end.position.x - player.transform.position.x - coord.transform.position.x;
-            //position_x = (end.position.x - coord.transform.position.x) * 100f;
-            //position_y = (end.position.y - coord.transform.position.y) * 100f;
-            //position_z = (end.position.z - coord.transform.position.z -0.03f) * 100f;
+            position_x = (end.position.x - coord.transform.position.x) * 100f;
+            position_y = (end.position.y - coord.transform.position.y -0.07f) * 100f;
+            position_z = (end.position.z - coord.transform.position.z) * 100f;
             
             var P21 = P2 - P1;
 

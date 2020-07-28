@@ -87,6 +87,7 @@ namespace Picasso
         void Avake()
         {
             lognews.text = "";
+            coord = GameObject.FindWithTag("coord");
 
             //Laser = GameObject.FindWithTag("Laser");
         }
@@ -111,7 +112,7 @@ namespace Picasso
         {
 
             if (targetDevice.TryGetFeatureValue(CommonUsages.triggerButton,
-                out TriggerButtonValue) && TriggerButtonValue)
+                    out TriggerButtonValue) && TriggerButtonValue)
             {
                 // if start pressing, trigger event
                 if (!IsPressed)
@@ -161,6 +162,8 @@ namespace Picasso
                 {
                     lognews.text = "Trigger is pressed\n"+ painterPosition.position;
                     currentLine.end.position = painterPosition.position;
+
+                    
                     
                     if (lineHitObject.name == "LineRenderer")
                     {
@@ -172,9 +175,7 @@ namespace Picasso
                         var end = cs.end;
                         var p  = HitBox.transform.position;
                         var postion = NearestPointOnLine(start.position, end.position, p);
-                    
                         currentLine.end.position = NearestPointOnLine(start.position, end.position, p);
-                        //lineLengthLabel.text = x + z +y;
                     }
 
                     if (lineHitObject.name == "Start")
@@ -197,9 +198,7 @@ namespace Picasso
 
 
                 }
-                lognews.text = lineHitObject.name;
-                
-                
+
             }
  
             // check for button release
@@ -216,7 +215,20 @@ namespace Picasso
                 lognews.text = "Trigger is released\n";
             }
  
+            string x = painterPosition.position.x.ToString("F");
+            string z = painterPosition.position.z.ToString("F"); 
+            string y = painterPosition.position.y.ToString("F");
+            
+            
+            
+            string position_x = ((painterPosition.position.x - coord.transform.position.x) * 100f).ToString("F");
+            string position_y = ((painterPosition.position.y - coord.transform.position.y -0.07f) * 100f).ToString("F");
+            string position_z = ((painterPosition.position.z - coord.transform.position.z - 0.03) * 100f).ToString("F");
 
+            
+            lognews.text = lineHitObject.name;
+                
+            lineLengthLabel.text = "( "+position_x + " , "+position_z + " , " +position_y+" )";
             /*
 
             targetDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out bool SecondaryButtonValue);
@@ -225,6 +237,7 @@ namespace Picasso
             targetDevice.TryGetFeatureValue(CommonUsages.triggerButton, out bool TriggerButtonValue);
 
 */
+            
 
         }
 
