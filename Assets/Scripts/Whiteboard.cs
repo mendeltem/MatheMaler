@@ -60,6 +60,7 @@ namespace Picasso
         public bool IsPressed { get; private set; }
         
         bool TriggerButtonValue;
+        bool SecondaryButtonValue;
         
         
         public Ray forwardRay;
@@ -110,6 +111,63 @@ namespace Picasso
         private void Update()
         {
 
+            Delete();
+            DrawLine();
+ 
+            string x = painterPosition.position.x.ToString("F");
+            string z = painterPosition.position.z.ToString("F"); 
+            string y = painterPosition.position.y.ToString("F");
+            
+            
+            
+            string position_x = ((painterPosition.position.x - coord.transform.position.x) * 100f).ToString("F");
+            string position_y = ((painterPosition.position.y - coord.transform.position.y -0.07f) * 100f).ToString("F");
+            string position_z = ((painterPosition.position.z - coord.transform.position.z - 0.03) * 100f).ToString("F");
+
+            
+            lognews.text = lineHitObject.name;
+                
+            lineLengthLabel.text = "( "+position_x + " , "+position_z + " , " +position_y+" )";
+            /*
+
+            targetDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out bool SecondaryButtonValue);
+            targetDevice.TryGetFeatureValue(CommonUsages.primaryButton, out bool PrimaryButtonValue);
+
+            targetDevice.TryGetFeatureValue(CommonUsages.triggerButton, out bool TriggerButtonValue);
+
+*/
+            
+
+        }
+
+        private void Delete()
+        {
+            //Delete Lines
+            if (lines.Count > 1)
+            {
+                if (targetDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out bool SecondaryButtonValue) &&
+                    SecondaryButtonValue)
+                {
+
+                    if (lineHitObject.transform.parent.gameObject.gameObject.tag == "Line")
+                    {
+                        GameObject go = lineHitObject.transform.parent.gameObject;
+
+                        var cs = go.GetComponent<Line>();
+
+                        cs.start.position = new Vector3(0, 0, 0);
+                        cs.end.position = new Vector3(0, 0, 0);
+
+
+                    }
+
+                }
+            }
+        }
+
+        private void DrawLine()
+        {
+            //Draw  Lines that can snap to each Lines and Vertices from the lines
             if (targetDevice.TryGetFeatureValue(CommonUsages.triggerButton,
                     out TriggerButtonValue) && TriggerButtonValue)
             {
@@ -152,9 +210,6 @@ namespace Picasso
                     
                     lognews.text = "start press Trigger\n";
 
-
-                    
-
                 }
                 //The Button is pressed 
                 else
@@ -162,8 +217,6 @@ namespace Picasso
                     lognews.text = "Trigger is pressed\n"+ painterPosition.position;
                     currentLine.end.position = painterPosition.position;
 
-                    
-                    
                     if (lineHitObject.name == "LineRenderer")
                     {
                         //Snap on the line
@@ -194,10 +247,7 @@ namespace Picasso
                         var cs = go.GetComponent<Line>();
                         currentLine.end.position = cs.end.position;
                     }
-
-
                 }
-
             }
  
             // check for button release
@@ -213,31 +263,6 @@ namespace Picasso
                 
                 lognews.text = "Trigger is released\n";
             }
- 
-            string x = painterPosition.position.x.ToString("F");
-            string z = painterPosition.position.z.ToString("F"); 
-            string y = painterPosition.position.y.ToString("F");
-            
-            
-            
-            string position_x = ((painterPosition.position.x - coord.transform.position.x) * 100f).ToString("F");
-            string position_y = ((painterPosition.position.y - coord.transform.position.y -0.07f) * 100f).ToString("F");
-            string position_z = ((painterPosition.position.z - coord.transform.position.z - 0.03) * 100f).ToString("F");
-
-            
-            lognews.text = lineHitObject.name;
-                
-            lineLengthLabel.text = "( "+position_x + " , "+position_z + " , " +position_y+" )";
-            /*
-
-            targetDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out bool SecondaryButtonValue);
-            targetDevice.TryGetFeatureValue(CommonUsages.primaryButton, out bool PrimaryButtonValue);
-
-            targetDevice.TryGetFeatureValue(CommonUsages.triggerButton, out bool TriggerButtonValue);
-
-*/
-            
-
         }
 
         public static Vector3 NearestPointOnLine(Vector3 start, Vector3 end, Vector3 pnt)
