@@ -143,13 +143,13 @@ namespace Picasso
         private void Delete()
         {
             //Delete Lines
-            if (lines.Count > 1)
+            if (lines.Count > 0)
             {
                 if (targetDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out bool SecondaryButtonValue) &&
                     SecondaryButtonValue)
                 {
 
-                    if (lineHitObject.transform.parent.gameObject.gameObject.tag == "Line")
+                    if (lineHitObject.name == "LineRenderer")
                     {
                         GameObject go = lineHitObject.transform.parent.gameObject;
 
@@ -157,8 +157,9 @@ namespace Picasso
 
                         cs.start.position = new Vector3(0, 0, 0);
                         cs.end.position = new Vector3(0, 0, 0);
-
-
+                        
+                        lognews.text = " press B Button\n";
+                        
                     }
 
                 }
