@@ -1,0 +1,243 @@
+﻿using System.Collections.Generic;
+using System.Globalization;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.XR;
+using UnityEngine.Events;
+
+namespace Picasso
+{
+    [System.Serializable]
+    public class PrimaryButtonEvent : UnityEvent<bool>
+    {
+    }
+
+    public class Whiteboard : MonoBehaviour
+    {
+        //public PaintMode paintMode;
+
+        public Transform linesParent;
+        public GameObject linesParentObject;
+
+        public string materialColor;
+        
+        private InputDevice targetDevice;
+        public GameObject linePrefab;
+        public GameObject rightController;
+
+        public Transform painterPosition => rightController.transform.Find("RightControllerHitBox").transform;
+
+        public bool isDrawing;
+        public bool isGrabbing;
+        public GameObject HitBox;
+        public GameObject lineHitObject;
+        public float hitRadiusVertexSnapping = 1f;
+        public List<Line> lines;
+        public Line currentLine;
+        public Material material;
+
+
+
+        public float width;
+
+        private bool lastPrimary_ButtonState = false;
+        
+
+        public PrimaryButtonEvent primaryButtonPress;
+
+        public TextMeshProUGUI lognews;
+        public TextMeshProUGUI lineLengthLabel;
+
+        public GameObject red_sphere;
+        [Tooltip("Event when the button starts being pressed")]
+        public UnityEvent OnPress;
+
+        [Tooltip("Event when the button is released")]
+        public UnityEvent OnRelease;
+
+        
+        // to check whether it's being pressed
+        public bool IsPressed { get; private set; }
+        
+        bool TriggerButtonValue;
+        
+        
+        public Ray forwardRay;
+        public LayerMask toolboxLayer;
+        public GameObject toolboxHitObject;
+        public GameObject th_box;
+        public GameObject Laser;
+        
+        /*
+        public Draggable hueDraggable;
+        public Draggable saturationDraggable;
+*/
+
+
+ 
+
+        public Vector3 dir;
+        public UnityEngine.Color temp_color;
+        public GameObject line;
+        public GameObject coord;
+
+        
+
+        void Avake()
+        {
+            lognews.text = "";
+
+            //Laser = GameObject.FindWithTag("Laser");
+        }
+        
+
+        private void Start()
+        {
+
+            List<InputDevice> devices = new List<InputDevice>();
+            InputDeviceCharacteristics rightControllerCharacteristics =
+                InputDeviceCharacteristics.Right | InputDeviceCharacteristics.Controller;
+            InputDevices.GetDevicesWithCharacteristics(rightControllerCharacteristics, devices);
+            
+            if (devices.Count > 0)
+            {
+                targetDevice = devices[0];
+            }
+
+        }
+
+        private void Update()
+        {
+
+            if (targetDevice.TryGetFeatureValue(CommonUsages.triggerButton,
+                out TriggerButtonValue) && TriggerButtonValue)
+            {
+                // if start pressing, trigger event
+                if (!IsPressed)
+                {
+                    IsPressed = true;
+                    OnPress.Invoke();
+                    
+                    //creating lineprefab
+                    currentLine = Instantiate(linePrefab).GetComponent<Line>();
+                    currentLine.start.position = painterPosition.position;
+                    currentLine.transform.parent = linesParent;
+                    currentLine.draw_type = 1;
+                    currentLine.tag = "CurrentLine";
+                    currentLine.width = width;
+                    currentLine.material = material;
+                    
+                    currentLine.boxCollider.enabled = false;
+                    currentLine.end.GetComponent<SphereCollider>().enabled = false;
+                    currentLine.start.GetComponent<SphereCollider>().enabled = false;
+                    
+                    if (lineHitObject.name == "Start")
+                    {
+                        //Start Snap
+                        GameObject go = lineHitObject.transform.parent.gameObject;
+                            
+                        var cs = go.GetComponent<Line>();
+                        currentLine.start.position = cs.start.position;
+                    }
+
+                    if (lineHitObject.name == "End")
+                    {
+                        //End Snap
+                        GameObject go = lineHitObject.transform.parent.gameObject;
+                            
+                        var cs = go.GetComponent<Line>();
+                        currentLine.start.position = cs.end.position;
+                    }
+                    
+                    lognews.text = "start press Trigger\n";
+
+
+                    
+
+                }
+                //The Button is pressed 
+                else
+                {
+                    lognews.text = "Trigger is pressed\n"+ painterPosition.position;
+                    currentLine.end.position = painterPosition.position;
+                    
+                    if (lineHitObject.name == "LineRenderer")
+                    {
+                        //Snap on the line
+                        GameObject go = lineHitObject.transform.parent.gameObject;
+                            
+                        var cs = go.GetComponent<Line>();
+                        var start = cs.start;
+                        var end = cs.end;
+                        var p  = HitBox.transform.position;
+                        var postion = NearestPointOnLine(start.position, end.position, p);
+                    
+                        currentLine.end.position = NearestPointOnLine(start.position, end.position, p);
+                        //lineLengthLabel.text = x + z +y;
+                    }
+
+                    if (lineHitObject.name == "Start")
+                    {
+                        //Start Snap
+                        GameObject go = lineHitObject.transform.parent.gameObject;
+                            
+                        var cs = go.GetComponent<Line>();
+                        currentLine.end.position = cs.start.position;
+                    }
+
+                    if (lineHitObject.name == "End")
+                    {
+                        //End Snap
+                        GameObject go = lineHitObject.transform.parent.gameObject;
+                            
+                        var cs = go.GetComponent<Line>();
+                        currentLine.end.position = cs.end.position;
+                    }
+
+
+                }
+                lognews.text = lineHitObject.name;
+                
+                
+            }
+ 
+            // check for button release
+            else if (IsPressed)
+            {
+                IsPressed = false;
+                OnRelease.Invoke();
+                currentLine.boxCollider.enabled = true;
+                currentLine.end.GetComponent<SphereCollider>().enabled = true;
+                currentLine.start.GetComponent<SphereCollider>().enabled = true;
+                currentLine.tag = "Line";
+                lines.Add(currentLine);
+                
+                lognews.text = "Trigger is released\n";
+            }
+ 
+
+            /*
+
+            targetDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out bool SecondaryButtonValue);
+            targetDevice.TryGetFeatureValue(CommonUsages.primaryButton, out bool PrimaryButtonValue);
+
+            targetDevice.TryGetFeatureValue(CommonUsages.triggerButton, out bool TriggerButtonValue);
+
+*/
+
+        }
+
+        public static Vector3 NearestPointOnLine(Vector3 start, Vector3 end, Vector3 pnt)
+        {
+            var line = (end - start);
+            var len = line.magnitude;
+            line.Normalize();
+
+            var v = pnt - start;
+            var d = Vector3.Dot(v, line);
+            d = Mathf.Clamp(d, 0f, len);
+            return start + line * d;
+        }
+    }
+}
