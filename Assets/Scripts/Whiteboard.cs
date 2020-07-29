@@ -171,8 +171,7 @@ namespace Picasso
 
         private void DrawLine()
         {
-
-
+            //create dummy Line for color change
             if (targetDevice.TryGetFeatureValue(CommonUsages.primaryButton,
                 out PrimaryButtonValue) && PrimaryButtonValue)
             {
