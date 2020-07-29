@@ -52,6 +52,7 @@ namespace Picasso
 
 			showVertices = true;
 			quadRenderer.material = material;
+			lineRenderer.material = material;
 		}
 
 		//GameObject newText = new GameObject(text.Replace(" ", "-"), typeof(RectTransform));
@@ -89,17 +90,20 @@ namespace Picasso
             	quad.transform.up         = P21;
                 boxCollider.size          =  new Vector3(3f, 0.8f, 3f);
 
+	
+	
             	if (lineRenderer.enabled)
             	{
 
                 lineRenderer.SetPositions(new[] {start.position, end.position});
-                lineRenderer.startColor = material.color;
-                lineRenderer.endColor = material.color;
+
                 lineRenderer.startWidth = width;
                 lineRenderer.endWidth = width;
                 lineRenderer.material = material;
-                
+                lineRenderer.startColor = material.color;
+                lineRenderer.endColor = material.color;
             	}
+
 			}
 			else if (draw_type == 2)
 			{

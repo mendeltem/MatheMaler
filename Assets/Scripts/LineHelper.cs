@@ -74,15 +74,14 @@ public class LineHelper : MonoBehaviour
         
         if (targetDevice.TryGetFeatureValue(CommonUsages.triggerButton,
                     out TriggerButtonValue) && TriggerButtonValue)
-            {
+        {
 
                 Helper.SetActive(true);
                 StaticHelper.SetActive(true);
 
 
 
-            }
-
+        }
         else
         {
                 Helper.SetActive(false);

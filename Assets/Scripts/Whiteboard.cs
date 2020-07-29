@@ -61,6 +61,7 @@ namespace Picasso
         
         bool TriggerButtonValue;
         bool SecondaryButtonValue;
+        bool PrimaryButtonValue;
         
         
         public Ray forwardRay;
@@ -125,7 +126,9 @@ namespace Picasso
             string position_z = ((painterPosition.position.z - coord.transform.position.z - 0.03) * 100f).ToString("F");
 
             
-            lognews.text = lineHitObject.name;
+            //lognews.text = lineHitObject.name;
+            
+            lognews.text = material.color.ToString("F");
                 
             lineLengthLabel.text = "( "+position_x + " , "+position_z + " , " +position_y+" )";
             /*
@@ -158,7 +161,7 @@ namespace Picasso
                         cs.start.position = new Vector3(0, 0, 0);
                         cs.end.position = new Vector3(0, 0, 0);
                         
-                        lognews.text = " press B Button\n";
+                        //lognews.text = " press B Button\n";
                         
                     }
 
@@ -168,6 +171,24 @@ namespace Picasso
 
         private void DrawLine()
         {
+
+
+            if (targetDevice.TryGetFeatureValue(CommonUsages.primaryButton,
+                out PrimaryButtonValue) && PrimaryButtonValue)
+            {
+                currentLine = Instantiate(linePrefab).GetComponent<Line>();
+                currentLine.start.position = new Vector3(0, 0, 0);
+                currentLine.end.position = new Vector3(0, 0, 0);
+                var color = material.color;
+                material = new Material(material.shader);
+                material.color = color;
+                currentLine.material = material;
+                currentLine.tag = "CurrentLine";
+                currentLine.boxCollider.enabled = false;
+                currentLine.end.GetComponent<SphereCollider>().enabled = false;
+                currentLine.start.GetComponent<SphereCollider>().enabled = false;
+            }
+
             //Draw  Lines that can snap to each Lines and Vertices from the lines
             if (targetDevice.TryGetFeatureValue(CommonUsages.triggerButton,
                     out TriggerButtonValue) && TriggerButtonValue)
@@ -185,7 +206,13 @@ namespace Picasso
                     currentLine.draw_type = 1;
                     currentLine.tag = "CurrentLine";
                     currentLine.width = width;
+                    
+                    var color = material.color;
+                    material = new Material(material.shader);
+                    material.color = color;    
                     currentLine.material = material;
+                    
+                    
                     
                     currentLine.boxCollider.enabled = false;
                     currentLine.end.GetComponent<SphereCollider>().enabled = false;
@@ -209,13 +236,15 @@ namespace Picasso
                         currentLine.start.position = cs.end.position;
                     }
                     
-                    lognews.text = "start press Trigger\n";
+                    //lognews.text = "start press Trigger\n";
+                    
+                    
 
                 }
                 //The Button is pressed 
                 else
                 {
-                    lognews.text = "Trigger is pressed\n"+ painterPosition.position;
+                    //lognews.text = "Trigger is pressed\n"+ painterPosition.position;
                     currentLine.end.position = painterPosition.position;
 
                     if (lineHitObject.name == "LineRenderer")
@@ -260,9 +289,11 @@ namespace Picasso
                 currentLine.end.GetComponent<SphereCollider>().enabled = true;
                 currentLine.start.GetComponent<SphereCollider>().enabled = true;
                 currentLine.tag = "Line";
+
+                
                 lines.Add(currentLine);
                 
-                lognews.text = "Trigger is released\n";
+                //lognews.text = "Trigger is released\n";
             }
         }
 
@@ -277,5 +308,17 @@ namespace Picasso
             d = Mathf.Clamp(d, 0f, len);
             return start + line * d;
         }
+        void OnColorChange(HSBColor color)
+        {
+            var c = color.ToColor();
+            c.a = 1f;
+            material.color = c;
+            materialColor = "#" + ToHex(c.a) + ToHex(c.r) + ToHex(c.g) + ToHex(c.b);
+        }
+        string ToHex(float n)
+        {
+            return ((int) (n * 255)).ToString("X").PadLeft(2, '0');
+        }
+
     }
 }
