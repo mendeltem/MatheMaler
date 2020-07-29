@@ -8,6 +8,7 @@ TagManager:
   - Line
   - CurrentLine
   - coord
+  - teleportarea
   layers:
   - Default
   - TransparentFX

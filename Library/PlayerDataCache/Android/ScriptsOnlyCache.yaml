@@ -6,6 +6,7 @@ ScriptsOnlyBuild:
     - ColorSaturationBrightnessPicker
     - Draggable
     - LineHelper
+    - LocomotionControll
     - Picasso.ControllerRayHit
     - Picasso.Line
     - Picasso.RayHit
@@ -19,7 +20,13 @@ ScriptsOnlyBuild:
     - TMPro.TMP_StyleSheet
     - TMPro.TextMeshProUGUI
     Unity.XR.Interaction.Toolkit.dll:
+    - UnityEngine.XR.Interaction.Toolkit.LocomotionSystem
+    - UnityEngine.XR.Interaction.Toolkit.TeleportationArea
+    - UnityEngine.XR.Interaction.Toolkit.TeleportationProvider
     - UnityEngine.XR.Interaction.Toolkit.XRController
+    - UnityEngine.XR.Interaction.Toolkit.XRInteractionManager
+    - UnityEngine.XR.Interaction.Toolkit.XRInteractorLineVisual
+    - UnityEngine.XR.Interaction.Toolkit.XRRayInteractor
     - UnityEngine.XR.Interaction.Toolkit.XRRig
     Unity.XR.Management.Editor.dll:
     - UnityEditor.XR.Management.XRGeneralSettingsPerBuildTarget
@@ -92,7 +99,11 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11250}
     - Class: 114
+      Script: {instanceID: 11492}
+    - Class: 114
       Script: {instanceID: 11508}
+    - Class: 114
+      Script: {instanceID: 11566}
     - Class: 114
       Script: {instanceID: 11706}
     - Class: 114
@@ -132,13 +143,23 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 13192}
     - Class: 114
+      Script: {instanceID: 13240}
+    - Class: 114
+      Script: {instanceID: 13302}
+    - Class: 114
       Script: {instanceID: 13372}
     - Class: 114
       Script: {instanceID: 13562}
     - Class: 114
+      Script: {instanceID: 13568}
+    - Class: 114
+      Script: {instanceID: 13652}
+    - Class: 114
       Script: {instanceID: 13660}
     - Class: 114
       Script: {instanceID: 13676}
+    - Class: 114
+      Script: {instanceID: 208124}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 120
@@ -846,6 +867,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
+  - hash:
+      serializedVersion: 2
+      Hash: 4aeb56a4edcf5082a7961d6e838fc1aa
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: LocomotionControll
   platform: 13
   scenePathNames:
   - Assets/Scenes/MatheMaler.unity
