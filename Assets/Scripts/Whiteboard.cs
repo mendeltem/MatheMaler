@@ -5,7 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR;
 using UnityEngine.Events;
-
+using UnityEngine.XR.Interaction.Toolkit;
+    
 namespace Picasso
 {
     [System.Serializable]
@@ -91,8 +92,10 @@ namespace Picasso
             coord = GameObject.FindWithTag("coord");
 
             //Laser = GameObject.FindWithTag("Laser");
+            
+            GameObject varGameObject = GameObject.FindWithTag("HitBox");
         }
-        
+
 
         private void Start()
         {
@@ -106,6 +109,10 @@ namespace Picasso
             {
                 targetDevice = devices[0];
             }
+            
+            
+            
+           
 
         }
 
@@ -114,34 +121,61 @@ namespace Picasso
 
             Delete();
             DrawLine();
- 
+            RaycastToolbox();
+            
+            /*
+            if (Physics.Raycast(forwardRay, out hit, 100f, toolboxLayer.value))
+            {
+                lognews.text = "ForwardRay HIT";
+            }
+            */
+            
+
             string x = painterPosition.position.x.ToString("F");
             string z = painterPosition.position.z.ToString("F"); 
             string y = painterPosition.position.y.ToString("F");
             
-            
-            
             string position_x = ((painterPosition.position.x - coord.transform.position.x) * 100f).ToString("F");
             string position_y = ((painterPosition.position.y - coord.transform.position.y -0.07f) * 100f).ToString("F");
             string position_z = ((painterPosition.position.z - coord.transform.position.z - 0.03) * 100f).ToString("F");
-
             
             //lognews.text = lineHitObject.name;
             
-            lognews.text = material.color.ToString("F");
+            //lognews.text = "ForwardRay " + forwardRay;
                 
             lineLengthLabel.text = "( "+position_x + " , "+position_z + " , " +position_y+" )";
             /*
 
             targetDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out bool SecondaryButtonValue);
             targetDevice.TryGetFeatureValue(CommonUsages.primaryButton, out bool PrimaryButtonValue);
-
             targetDevice.TryGetFeatureValue(CommonUsages.triggerButton, out bool TriggerButtonValue);
-
 */
-            
 
         }
+        
+
+private void RaycastToolbox()
+{
+    forwardRay = new Ray(painterPosition.position, painterPosition.transform.TransformDirection(Vector3.forward));
+    RaycastHit hit;
+    
+            
+    if (Physics.Raycast(forwardRay, out hit, Mathf.Infinity)) {
+             
+        if (hit.transform.gameObject.layer != toolboxLayer) {
+            toolboxHitObject = hit.collider.gameObject;
+            HitBox.GetComponent<XRInteractorLineVisual>().enabled = true;
+            // Make a path
+        } else {
+            toolboxHitObject = null;
+            HitBox.GetComponent<XRInteractorLineVisual>().enabled = false;
+            // Do whatever you want
+        }
+    }
+
+
+}
+
 
         private void Delete()
         {
