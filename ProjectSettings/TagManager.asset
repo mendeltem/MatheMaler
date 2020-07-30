@@ -9,6 +9,7 @@ TagManager:
   - CurrentLine
   - coord
   - teleportarea
+  - free
   layers:
   - Default
   - TransparentFX

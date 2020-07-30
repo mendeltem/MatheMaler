@@ -16,6 +16,7 @@ namespace Picasso
 
     public class Whiteboard : MonoBehaviour
     {
+        public PaintMode paintMode;
         //public PaintMode paintMode;
 
         public Transform linesParent;
@@ -32,6 +33,8 @@ namespace Picasso
         public bool isDrawing;
         public bool isGrabbing;
         public GameObject HitBox;
+        public GameObject RayInteractor;
+        
         public GameObject lineHitObject;
         public float hitRadiusVertexSnapping = 1f;
         public List<Line> lines;
@@ -67,10 +70,15 @@ namespace Picasso
         
         public Ray forwardRay;
         public LayerMask toolboxLayer;
+        public LayerMask UI;
         public GameObject toolboxHitObject;
         public GameObject th_box;
         public GameObject Laser;
         
+        
+        public Toggle toggle;
+        public Toggle toggle2;
+        public Toggle toggle3;
         /*
         public Draggable hueDraggable;
         public Draggable saturationDraggable;
@@ -96,7 +104,16 @@ namespace Picasso
             GameObject varGameObject = GameObject.FindWithTag("HitBox");
         }
 
+        public void enableDrawMode(bool isEnabled)
+        {
+            paintMode = isEnabled ? PaintMode.Draw : PaintMode.DrawingLines;
+        }
 
+        public void enableDrawingLinesMode(bool isEnabled)
+        {
+            paintMode = isEnabled ? PaintMode.DrawingLines : PaintMode.Draw;
+        }
+        
         private void Start()
         {
 
@@ -120,8 +137,27 @@ namespace Picasso
         {
 
             Delete();
-            DrawLine();
             RaycastToolbox();
+            
+            if (toolboxHitObject == null)
+            {
+                switch (paintMode)
+                {
+                    case PaintMode.Draw:
+                        Draw();
+                        lognews.text = "Draw";
+                            
+                        break;
+                    
+                    case PaintMode.DrawingLines:
+                        DrawLine();
+                        lognews.text = "DrawLine";
+                        break;
+                    default:
+                        break;
+                }
+
+            }
             
             /*
             if (Physics.Raycast(forwardRay, out hit, 100f, toolboxLayer.value))
@@ -152,29 +188,104 @@ namespace Picasso
 */
 
         }
-        
 
-private void RaycastToolbox()
-{
-    forwardRay = new Ray(painterPosition.position, painterPosition.transform.TransformDirection(Vector3.forward));
-    RaycastHit hit;
-    
+        void FixedUpdate()
+        {
             
-    if (Physics.Raycast(forwardRay, out hit, Mathf.Infinity)) {
-             
-        if (hit.transform.gameObject.layer != toolboxLayer) {
-            toolboxHitObject = hit.collider.gameObject;
-            HitBox.GetComponent<XRInteractorLineVisual>().enabled = true;
-            // Make a path
-        } else {
-            toolboxHitObject = null;
-            HitBox.GetComponent<XRInteractorLineVisual>().enabled = false;
-            // Do whatever you want
         }
-    }
+
+        private void RaycastToolbox()
+        {
+            forwardRay = new Ray(painterPosition.position, painterPosition.transform.TransformDirection(Vector3.forward));
+            RaycastHit hit;
+            
+            if (Physics.Raycast(forwardRay, out hit, Mathf.Infinity)) {
+                
+                lognews.text = hit.transform.gameObject.name;
 
 
-}
+                if (hit.transform.gameObject.name == "Checkmark")
+                {
+                    if (targetDevice.TryGetFeatureValue(CommonUsages.primaryButton,
+                            out PrimaryButtonValue) && PrimaryButtonValue)
+                    {
+                        // if start pressing, trigger event
+                        if (!IsPressed)
+                        {
+                            IsPressed = true;
+                            OnPress.Invoke();
+                            
+                            lognews.text = "Toggle!";
+                            
+                            toggle.isOn = true;
+                            toggle2.isOn = false;
+
+                            paintMode = PaintMode.Draw;
+                        }
+                    }
+                }
+                if (hit.transform.gameObject.name == "Checkmark2")
+                {
+                    if (targetDevice.TryGetFeatureValue(CommonUsages.primaryButton,
+                        out PrimaryButtonValue) && PrimaryButtonValue)
+                    {
+                        // if start pressing, trigger event
+                        if (!IsPressed)
+                        {
+                            IsPressed = true;
+                            OnPress.Invoke();
+                            
+                            lognews.text = "Toggle2!";
+                            
+                            toggle.isOn = false;
+                            toggle2.isOn = true;
+                            paintMode = PaintMode.DrawingLines;
+                        }
+                    }
+                }
+                
+                if (hit.transform.gameObject.layer == 8  ) {
+                    toolboxHitObject = hit.collider.gameObject;
+                    RayInteractor.GetComponent<XRInteractorLineVisual>().enabled = true;
+                } else
+                {
+                    toolboxHitObject = null;
+                    RayInteractor.GetComponent<XRInteractorLineVisual>().enabled = false;
+                }
+            }
+            
+            
+         /*   
+            if (Physics.Raycast(forwardRay, out hit, 100f, toolboxLayer.value))
+            {
+                lognews.text = "tool: " +hit.transform.gameObject.layer.ToString("F");
+                RayInteractor.GetComponent<XRInteractorLineVisual>().enabled = true;
+            }
+            else
+            {
+                lognews.text = "else: " + hit.transform.gameObject.layer.ToString("F");
+                RayInteractor.GetComponent<XRInteractorLineVisual>().enabled = false;
+            }
+            */
+            
+            /*
+            if (Physics.Raycast(forwardRay, out hit, Mathf.Infinity)) {
+                
+                lognews.text = hit.transform.gameObject.layer.ToString("F");
+                     
+                if (hit.transform.gameObject.layer == toolboxLayer  ) {
+                    toolboxHitObject = hit.collider.gameObject;
+                    RayInteractor.GetComponent<XRInteractorLineVisual>().enabled = true;
+                } else
+                {
+                    toolboxHitObject = null;
+                    RayInteractor.GetComponent<XRInteractorLineVisual>().enabled = false;
+                }
+            }
+            */
+
+
+        }
 
 
         private void Delete()
@@ -202,7 +313,136 @@ private void RaycastToolbox()
                 }
             }
         }
+        private void Draw()
+        {
+            //create dummy Line for color change
+            if (targetDevice.TryGetFeatureValue(CommonUsages.primaryButton,
+                out PrimaryButtonValue) && PrimaryButtonValue)
+            {
+                currentLine = Instantiate(linePrefab).GetComponent<Line>();
+                currentLine.start.position = new Vector3(0, 0, 0);
+                currentLine.end.position = new Vector3(0, 0, 0);
+                var color = material.color;
+                material = new Material(material.shader);
+                material.color = color;
+                currentLine.material = material;
+                currentLine.tag = "CurrentLine";
+                currentLine.boxCollider.enabled = false;
+                currentLine.end.GetComponent<SphereCollider>().enabled = false;
+                currentLine.start.GetComponent<SphereCollider>().enabled = false;
+            }
 
+            //Draw  Lines that can snap to each Lines and Vertices from the lines
+            if (targetDevice.TryGetFeatureValue(CommonUsages.triggerButton,
+                    out TriggerButtonValue) && TriggerButtonValue)
+            {
+                // if start pressing, trigger event
+                if (!IsPressed)
+                {
+                    IsPressed = true;
+                    OnPress.Invoke();
+                    
+                    //creating lineprefab
+                    isDrawing = true;
+
+                    currentLine = Instantiate(linePrefab).GetComponent<Line>();
+                    currentLine.tag = "free";
+                    currentLine.draw_type = 2;
+                    currentLine.width = 0.01f;
+                    currentLine.transform.parent = linesParent; 
+                    
+                    var color = material.color;
+                    material = new Material(material.shader);
+                    material.color = color;    
+                    currentLine.material = material;
+                    
+                    
+                    currentLine.boxCollider.enabled = false;
+                    currentLine.end.GetComponent<SphereCollider>().enabled = false;
+                    currentLine.start.GetComponent<SphereCollider>().enabled = false;
+                    
+                    if (lineHitObject.name == "Start")
+                    {
+                        //Start Snap
+                        GameObject go = lineHitObject.transform.parent.gameObject;
+                            
+                        var cs = go.GetComponent<Line>();
+                        currentLine.start.position = cs.start.position;
+                    }
+
+                    if (lineHitObject.name == "End")
+                    {
+                        //End Snap
+                        GameObject go = lineHitObject.transform.parent.gameObject;
+                            
+                        var cs = go.GetComponent<Line>();
+                        currentLine.start.position = cs.end.position;
+                    }
+                    currentLine.numClicks = 0;
+
+                }
+                //The Button is pressed 
+                else
+                {
+                    //lognews.text = "Trigger is pressed\n"+ painterPosition.position;
+                    currentLine.end.position = painterPosition.position;
+
+                    if (lineHitObject.name == "LineRenderer")
+                    {
+                        //Snap on the line
+                        GameObject go = lineHitObject.transform.parent.gameObject;
+                            
+                        var cs = go.GetComponent<Line>();
+                        var start = cs.start;
+                        var end = cs.end;
+                        var p  = HitBox.transform.position;
+                        var postion = NearestPointOnLine(start.position, end.position, p);
+                        currentLine.end.position = NearestPointOnLine(start.position, end.position, p);
+                    }
+
+                    if (lineHitObject.name == "Start")
+                    {
+                        //Start Snap
+                        GameObject go = lineHitObject.transform.parent.gameObject;
+                            
+                        var cs = go.GetComponent<Line>();
+                        currentLine.end.position = cs.start.position;
+                    }
+
+                    if (lineHitObject.name == "End")
+                    {
+                        //End Snap
+                        GameObject go = lineHitObject.transform.parent.gameObject;
+                            
+                        var cs = go.GetComponent<Line>();
+                        currentLine.end.position = cs.end.position;
+                    }
+                }
+            }
+ 
+            // check for button release
+            else if (IsPressed)
+            {
+                IsPressed = false;
+                OnRelease.Invoke();
+                currentLine.boxCollider.enabled = true;
+                currentLine.end.GetComponent<SphereCollider>().enabled = true;
+                currentLine.start.GetComponent<SphereCollider>().enabled = true;
+                currentLine.tag = "free";
+
+                
+                isDrawing = false;
+                var color = material.color;
+                material = new Material(material.shader);
+                material.color = color;
+
+                lines.Add(currentLine);
+                
+                //lognews.text = "Trigger is released\n";
+            }
+        }
+        
+        
         private void DrawLine()
         {
             //create dummy Line for color change
