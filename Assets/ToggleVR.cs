@@ -45,24 +45,25 @@ public class ToggleVR : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+/*
         if (targetDevice.TryGetFeatureValue(CommonUsages.primaryButton,
             out PrimaryButtonValue) && PrimaryButtonValue)
         {
             var forwardRay = new Ray(painterPosition.transform.position,  painterPosition.transform.TransformDirection(Vector3.forward));
             RaycastHit hit;
-         /*
+
             if (GetComponent<Collider>().Raycast(forwardRay, out hit, 100f))
             {
                 toggle.isOn = !toggle.isOn;
             }
-            */
+    
             if (Physics.Raycast(forwardRay, out hit, Mathf.Infinity)) {
                 
                 if (hit.transform.gameObject.name == "Checkmark"  ) {
                     
                     lognews.text = "Toggle!";
                     
-                    toggle.isOn = !toggle.isOn;
+                    //toggle.isOn = !toggle.isOn;
                 }
                 
                 
@@ -71,7 +72,7 @@ public class ToggleVR : MonoBehaviour
             lognews.text = "not Toggle!";
             
         }
-        
+        */
         
         
 

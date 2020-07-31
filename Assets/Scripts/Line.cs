@@ -45,6 +45,8 @@ namespace Picasso
 			lineRenderer = GetComponent<LineRenderer>();
 			boxCollider = quad.GetComponent<BoxCollider>();
 
+			//meshCollider = quad.GetComponent<BoxCollider>();
+
 			//end.SphereCollider.enabled = false;
             
 			boxCollider.enabled = false;
@@ -58,6 +60,8 @@ namespace Picasso
 		//GameObject newText = new GameObject(text.Replace(" ", "-"), typeof(RectTransform));
 		
         public BoxCollider boxCollider;
+
+		
 
         public Vector3 boxScale = Vector3.one;
         

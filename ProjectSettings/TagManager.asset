@@ -10,6 +10,7 @@ TagManager:
   - coord
   - teleportarea
   - free
+  - DummyLine
   layers:
   - Default
   - TransparentFX
