@@ -6,6 +6,9 @@ namespace Picasso
     public enum PaintMode
     {
         DrawingLines, 
-        Draw
+        Draw,
+        DrawLongLine,
+        DrawPoints,
+        DrawCircles,
     }
 }

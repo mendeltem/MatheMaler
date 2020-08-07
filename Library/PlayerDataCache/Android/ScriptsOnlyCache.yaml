@@ -712,7 +712,7 @@ ScriptsOnlyBuild:
     className: CameraOffset
   - hash:
       serializedVersion: 2
-      Hash: ec3bdaa6040c83cae2239826c077dbc5
+      Hash: 2ffa1b5439662d894586832823138f11
     assemblyName: Assembly-CSharp.dll
     namespaceName: Picasso
     className: Whiteboard

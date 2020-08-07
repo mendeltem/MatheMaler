@@ -119,6 +119,34 @@ namespace Picasso
                 lineRenderer.material = material;
                 lineRenderer.startColor = material.color;
                 lineRenderer.endColor = material.color;
+			}			
+			else if (draw_type == 3)
+			{
+            	quad.transform.position   = P1 + P21 / 2.0f;
+            	quad.transform.localScale = new Vector3(width, P21.magnitude, width);
+            	quad.transform.up         = P21;
+                boxCollider.size          =  new Vector3(3f, 0.8f, 3f);
+
+            	if (lineRenderer.enabled)
+            	{
+
+				Vector3 dir = end.position - start.position;
+
+				Vector3 extended_vector =  dir * 1000f;
+
+				lineRenderer.SetPositions(new[] {start.position, end.position + extended_vector});
+
+                lineRenderer.startWidth = width;
+                lineRenderer.endWidth = width;
+                lineRenderer.material = material;
+                lineRenderer.startColor = material.color;
+                lineRenderer.endColor = material.color;
+            	}
+			}
+			else if (draw_type == 4)
+			{
+            	
+            	
 			}
 		}
         

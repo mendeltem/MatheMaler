@@ -82,13 +82,11 @@ namespace Picasso
         public Toggle toggle;
         public Toggle toggle2;
         public Toggle toggle3;
+        public Toggle toggle4;
         /*
         public Draggable hueDraggable;
         public Draggable saturationDraggable;
 */
-
-
- 
 
         public Vector3 dir;
         public UnityEngine.Color temp_color;
@@ -156,6 +154,19 @@ namespace Picasso
                         DrawLine();
                         //lognews.text = "DrawLine";
                         break;
+                    
+                    case PaintMode.DrawLongLine:
+                        DrawLongLine();
+                        //lognews.text = "DrawLine";
+                        break;
+                    
+                    case PaintMode.DrawPoints:
+                        DrawPoints();
+                        //lognews.text = "DrawLine";
+                        break;             
+                    
+                        
+
                     default:
                         break;
                 }
@@ -257,6 +268,8 @@ namespace Picasso
                             
                             toggle.isOn = true;
                             toggle2.isOn = false;
+                            toggle3.isOn = false;
+                            toggle4.isOn = false;
 
                             paintMode = PaintMode.Draw;
                         }
@@ -277,11 +290,54 @@ namespace Picasso
                             
                             toggle.isOn = false;
                             toggle2.isOn = true;
+                            toggle3.isOn = false;
+                            toggle4.isOn = false;
                             paintMode = PaintMode.DrawingLines;
                         }
                     }
                 }
-                
+                if (hit.transform.gameObject.name == "Checkmark3")
+                {
+                    if (targetDevice.TryGetFeatureValue(CommonUsages.primaryButton,
+                        out PrimaryButtonValue) && PrimaryButtonValue)
+                    {
+                        // if start pressing, trigger event
+                        if (!IsPressed)
+                        {
+                            IsPressed = true;
+                            OnPress.Invoke();
+                            
+                            //lognews.text = "Toggle2!";
+                            
+                            toggle.isOn = false;
+                            toggle2.isOn = false;
+                            toggle3.isOn = true;
+                            toggle4.isOn = false;
+                            paintMode = PaintMode.DrawLongLine;
+                        }
+                    }
+                }
+                if (hit.transform.gameObject.name == "Checkmark4")
+                {
+                    if (targetDevice.TryGetFeatureValue(CommonUsages.primaryButton,
+                        out PrimaryButtonValue) && PrimaryButtonValue)
+                    {
+                        // if start pressing, trigger event
+                        if (!IsPressed)
+                        {
+                            IsPressed = true;
+                            OnPress.Invoke();
+                            
+                            //lognews.text = "Toggle2!";
+                            
+                            toggle.isOn = false;
+                            toggle2.isOn = false;
+                            toggle3.isOn = false;
+                            toggle4.isOn = true;
+                            paintMode = PaintMode.DrawPoints;
+                        }
+                    }
+                }               
                 if (hit.transform.gameObject.layer == 8  ) {
                     toolboxHitObject = hit.collider.gameObject;
                     RayInteractor.GetComponent<XRInteractorLineVisual>().enabled = true;
@@ -324,8 +380,6 @@ namespace Picasso
 
 
         }
-
-
         private void Delete()
         {
             //Delete Lines
@@ -501,8 +555,6 @@ namespace Picasso
                 //lognews.text = "Trigger is released\n";
             }
         }
-        
-        
         private void DrawLine()
         {
  
@@ -613,6 +665,162 @@ namespace Picasso
                 currentLine.tag = "Line";
 
                 
+                lines.Add(currentLine);
+                
+                //lognews.text = "Trigger is released\n";
+            }
+        }
+        private void DrawLongLine()
+        {
+ 
+            //Draw  Lines that can snap to each Lines and Vertices from the lines
+            if (targetDevice.TryGetFeatureValue(CommonUsages.triggerButton,
+                    out TriggerButtonValue) && TriggerButtonValue)
+            {
+                // if start pressing, trigger event
+                if (!IsPressed)
+                {
+                    IsPressed = true;
+                    OnPress.Invoke();
+                    
+                    //creating lineprefab
+                    currentLine = Instantiate(linePrefab).GetComponent<Line>();
+                    currentLine.start.position = painterPosition.position;
+                    currentLine.transform.parent = linesParent;
+                    currentLine.draw_type = 3;
+                    currentLine.tag = "CurrentLine";
+                    currentLine.width = width;
+                    
+                    var color = material.color;
+                    material = new Material(material.shader);
+                    material.color = color;    
+                    currentLine.material = material;
+                    
+                    
+                    
+                    currentLine.boxCollider.enabled = false;
+                    currentLine.end.GetComponent<SphereCollider>().enabled = false;
+                    currentLine.start.GetComponent<SphereCollider>().enabled = false;
+                    
+                    if (lineHitObject.name == "Start")
+                    {
+                        //Start Snap
+                        GameObject go = lineHitObject.transform.parent.gameObject;
+                            
+                        var cs = go.GetComponent<Line>();
+                        currentLine.start.position = cs.start.position;
+                    }
+
+                    if (lineHitObject.name == "End")
+                    {
+                        //End Snap
+                        GameObject go = lineHitObject.transform.parent.gameObject;
+                            
+                        var cs = go.GetComponent<Line>();
+                        currentLine.start.position = cs.end.position;
+                    }
+                    
+                    //lognews.text = "start press Trigger\n";
+                    
+                    
+
+                }
+                //The Button is pressed 
+                else
+                {
+                    //lognews.text = "Trigger is pressed\n"+ painterPosition.position;
+                    currentLine.end.position = painterPosition.position;
+                    
+                    currentLine.boxCollider.enabled = false;
+                    //currentLine.meshCollider.enabled = false;
+                    currentLine.end.GetComponent<SphereCollider>().enabled = false;
+                    currentLine.start.GetComponent<SphereCollider>().enabled = false;
+
+                    if (lineHitObject.name == "LineRenderer")
+                    {
+                        //Snap on the line
+                        GameObject go = lineHitObject.transform.parent.gameObject;
+                            
+                        var cs = go.GetComponent<Line>();
+                        var start = cs.start;
+                        var end = cs.end;
+                        var p  = HitBox.transform.position;
+                        var postion = NearestPointOnLine(start.position, end.position, p);
+                        currentLine.end.position = NearestPointOnLine(start.position, end.position, p);
+                    }
+
+                    if (lineHitObject.name == "Start")
+                    {
+                        //Start Snap
+                        GameObject go = lineHitObject.transform.parent.gameObject;
+                            
+                        var cs = go.GetComponent<Line>();
+                        currentLine.end.position = cs.start.position;
+                    }
+
+                    if (lineHitObject.name == "End")
+                    {
+                        //End Snap
+                        GameObject go = lineHitObject.transform.parent.gameObject;
+                            
+                        var cs = go.GetComponent<Line>();
+                        currentLine.end.position = cs.end.position;
+                    }
+                }
+            }
+ 
+            // check for button release
+            else if (IsPressed)
+            {
+                IsPressed = false;
+                OnRelease.Invoke();
+                currentLine.boxCollider.enabled = true;
+                currentLine.end.GetComponent<SphereCollider>().enabled = true;
+                currentLine.start.GetComponent<SphereCollider>().enabled = true;
+                currentLine.tag = "Line";
+
+                
+                lines.Add(currentLine);
+                
+                //lognews.text = "Trigger is released\n";
+            }
+        }
+
+        
+        private void DrawPoints()
+        {
+ 
+            //Draw  Lines that can snap to each Lines and Vertices from the lines
+            if (targetDevice.TryGetFeatureValue(CommonUsages.triggerButton,
+                    out TriggerButtonValue) && TriggerButtonValue)
+            {
+                // if start pressing, trigger event
+                if (!IsPressed)
+                {
+                    
+                    currentLine = Instantiate(linePrefab).GetComponent<Line>();
+                    IsPressed = true;
+                    OnPress.Invoke();
+                    
+                }
+                //The Button is pressed 
+                else
+                {
+                    
+                    currentLine.start.position = painterPosition.position;
+                    currentLine.transform.parent = linesParent;
+                    currentLine.draw_type = 4;
+              
+                }
+            }
+ 
+            // check for button release
+            else if (IsPressed)
+            {
+                IsPressed = false;
+                OnRelease.Invoke();
+                currentLine.boxCollider.enabled = true;
+                currentLine.start.GetComponent<SphereCollider>().enabled = true;
                 lines.Add(currentLine);
                 
                 //lognews.text = "Trigger is released\n";
