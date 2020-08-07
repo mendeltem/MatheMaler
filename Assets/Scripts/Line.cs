@@ -1,5 +1,14 @@
 ﻿using System;
 using UnityEngine;
+using System.Collections.Generic;
+using System.Globalization;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.XR;
+using UnityEngine.Events;
+using UnityEngine.XR.Interaction.Toolkit;
+
 
 namespace Picasso
 {
@@ -32,9 +41,16 @@ namespace Picasso
 		
 		public GameObject player;
 
-		public float position_x;
-		public float position_y;
-		public float position_z;
+		public float start_position_x;
+		public float start_position_y;
+		public float start_position_z;
+
+		public float end_position_x;
+		public float end_position_y;
+		public float end_position_z;
+
+		public TextMeshProUGUI start_text;
+		public TextMeshProUGUI end_text;
 		
 		void Start()
 		{
@@ -77,14 +93,20 @@ namespace Picasso
             var P2 = end.position;
             
             //position_x = end.position.x - player.transform.position.x - coord.transform.position.x;
-            position_x = (end.position.x - coord.transform.position.x) * 100f;
-            position_y = (end.position.y - coord.transform.position.y -0.07f) * 100f;
-            position_z = (end.position.z - coord.transform.position.z) * 100f;
+            end_position_x = (end.position.x - coord.transform.position.x) * 100f;
+            end_position_y = (end.position.y - coord.transform.position.y - 0.07f) * 100f;
+            end_position_z = (end.position.z - coord.transform.position.z- 0.03f) * 100f;
+
+
+            start_position_x = (start.position.x - coord.transform.position.x) * 100f;
+            start_position_y = (start.position.y - coord.transform.position.y - 0.07f) * 100f;
+            start_position_z = (start.position.z - coord.transform.position.z- 0.03f) * 100f;
             
             var P21 = P2 - P1;
 
 			var pivot = start.position;
 
+			
 			//var newTextComp = newText.AddComponent<Text>();
 
 			if (draw_type ==1)
@@ -94,18 +116,16 @@ namespace Picasso
             	quad.transform.up         = P21;
                 boxCollider.size          =  new Vector3(3f, 0.8f, 3f);
 
-	
-	
             	if (lineRenderer.enabled)
             	{
 
                 lineRenderer.SetPositions(new[] {start.position, end.position});
 
-                lineRenderer.startWidth = width;
-                lineRenderer.endWidth = width;
-                lineRenderer.material = material;
-                lineRenderer.startColor = material.color;
-                lineRenderer.endColor = material.color;
+                lineRenderer.startWidth  = width;
+                lineRenderer.endWidth    = width;
+                lineRenderer.material    = material;
+                lineRenderer.startColor  = material.color;
+                lineRenderer.endColor    = material.color;
             	}
 
 			}
@@ -148,6 +168,16 @@ namespace Picasso
             	
             	
 			}
+
+
+			start_text.text  = "( "+start_position_x.ToString("F") +" , "+
+									start_position_z.ToString("F") +" , "+
+									start_position_y+" )";
+			end_text.text     = "( "+end_position_x.ToString("F") +" , "+
+									end_position_z.ToString("F") +" , "+
+									end_position_y+" )";									
+
+
 		}
         
         public bool showVertices

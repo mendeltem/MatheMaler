@@ -181,9 +181,9 @@ namespace Picasso
             */
             
 
-            string x = painterPosition.position.x.ToString("F");
-            string z = painterPosition.position.z.ToString("F"); 
-            string y = painterPosition.position.y.ToString("F");
+            //string x = painterPosition.position.x.ToString("F");
+            //string z = painterPosition.position.z.ToString("F"); 
+            //string y = painterPosition.position.y.ToString("F");
             
             string position_x = ((painterPosition.position.x - coord.transform.position.x) * 100f).ToString("F");
             string position_y = ((painterPosition.position.y - coord.transform.position.y -0.07f) * 100f).ToString("F");

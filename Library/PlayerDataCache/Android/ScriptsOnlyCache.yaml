@@ -10,6 +10,7 @@ ScriptsOnlyBuild:
     - LocomotionControll
     - Picasso.ControllerRayHit
     - Picasso.Line
+    - Picasso.LookAtCamera
     - Picasso.RayHit
     - Picasso.Whiteboard
     - ToggleVR
@@ -128,53 +129,55 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12126}
     - Class: 114
-      Script: {instanceID: 12268}
+      Script: {instanceID: 12184}
     - Class: 114
-      Script: {instanceID: 12356}
+      Script: {instanceID: 12270}
     - Class: 114
-      Script: {instanceID: 12392}
+      Script: {instanceID: 12358}
     - Class: 114
-      Script: {instanceID: 12474}
+      Script: {instanceID: 12394}
     - Class: 114
-      Script: {instanceID: 12672}
+      Script: {instanceID: 12476}
     - Class: 114
       Script: {instanceID: 12674}
     - Class: 114
-      Script: {instanceID: 12738}
+      Script: {instanceID: 12676}
     - Class: 114
-      Script: {instanceID: 12754}
+      Script: {instanceID: 12740}
     - Class: 114
-      Script: {instanceID: 12874}
+      Script: {instanceID: 12756}
     - Class: 114
-      Script: {instanceID: 12882}
+      Script: {instanceID: 12876}
     - Class: 114
-      Script: {instanceID: 12890}
+      Script: {instanceID: 12884}
     - Class: 114
-      Script: {instanceID: 12900}
+      Script: {instanceID: 12892}
     - Class: 114
-      Script: {instanceID: 12958}
+      Script: {instanceID: 12902}
     - Class: 114
-      Script: {instanceID: 13040}
+      Script: {instanceID: 12960}
     - Class: 114
-      Script: {instanceID: 13108}
+      Script: {instanceID: 13042}
     - Class: 114
-      Script: {instanceID: 13128}
+      Script: {instanceID: 13110}
     - Class: 114
-      Script: {instanceID: 13202}
+      Script: {instanceID: 13130}
     - Class: 114
-      Script: {instanceID: 13250}
+      Script: {instanceID: 13204}
     - Class: 114
-      Script: {instanceID: 13312}
+      Script: {instanceID: 13252}
     - Class: 114
-      Script: {instanceID: 13382}
+      Script: {instanceID: 13314}
     - Class: 114
-      Script: {instanceID: 13572}
+      Script: {instanceID: 13384}
     - Class: 114
-      Script: {instanceID: 13578}
+      Script: {instanceID: 13574}
     - Class: 114
-      Script: {instanceID: 13662}
+      Script: {instanceID: 13580}
     - Class: 114
-      Script: {instanceID: 13686}
+      Script: {instanceID: 13664}
+    - Class: 114
+      Script: {instanceID: 13688}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 120
@@ -502,6 +505,12 @@ ScriptsOnlyBuild:
     className: XRUIInputModule
   - hash:
       serializedVersion: 2
+      Hash: 3eca4e97f89c96ff72aca71bbc916ccb
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Picasso
+    className: LookAtCamera
+  - hash:
+      serializedVersion: 2
       Hash: b3f3b97ba299dbc30e4d8ca17159c3ec
     assemblyName: Unity.XR.Interaction.Toolkit.dll
     namespaceName: UnityEngine.XR.Interaction.Toolkit
@@ -598,7 +607,7 @@ ScriptsOnlyBuild:
     className: RawImage
   - hash:
       serializedVersion: 2
-      Hash: f0b08fc8b74fce590e650bebdfabf6d6
+      Hash: 1b420254c460e35748e63a6510b5d607
     assemblyName: Assembly-CSharp.dll
     namespaceName: Picasso
     className: Line
