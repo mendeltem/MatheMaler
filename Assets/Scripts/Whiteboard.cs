@@ -189,7 +189,7 @@ namespace Picasso
             string position_y = ((painterPosition.position.y - coord.transform.position.y -0.07f) * 100f).ToString("F");
             string position_z = ((painterPosition.position.z - coord.transform.position.z - 0.03) * 100f).ToString("F");
             
-            lognews.text = lineHitObject.name;
+            //lognews.text = lineHitObject.name;
             
             //lognews.text = "ForwardRay " + forwardRay;
                 
