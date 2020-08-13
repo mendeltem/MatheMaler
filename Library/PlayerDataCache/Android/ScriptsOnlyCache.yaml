@@ -13,6 +13,7 @@ ScriptsOnlyBuild:
     - Picasso.LookAtCamera
     - Picasso.RayHit
     - Picasso.Whiteboard
+    - Presentation
     - ToggleVR
     Unity.Rider.Editor.dll:
     - Packages.Rider.Editor.UnitTesting.CallbackData
@@ -58,6 +59,7 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.CanvasScaler
     - UnityEngine.UI.GraphicRaycaster
     - UnityEngine.UI.Image
+    - UnityEngine.UI.RawImage
     - UnityEngine.UI.Text
     - UnityEngine.UI.Toggle
   sceneClasses:
@@ -139,6 +141,8 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12476}
     - Class: 114
+      Script: {instanceID: 12618}
+    - Class: 114
       Script: {instanceID: 12674}
     - Class: 114
       Script: {instanceID: 12676}
@@ -178,6 +182,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 13664}
     - Class: 114
       Script: {instanceID: 13688}
+    - Class: 114
+      Script: {instanceID: 35606}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 120
@@ -911,6 +917,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
+  - hash:
+      serializedVersion: 2
+      Hash: 1e726b3150d2724f9eaaf55d819fe6cd
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Presentation
   platform: 13
   scenePathNames:
   - Assets/Scenes/MatheMaler.unity

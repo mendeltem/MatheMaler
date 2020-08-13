@@ -48,9 +48,7 @@ namespace Picasso
 
         public float width;
 
-
         
-
         public PrimaryButtonEvent primaryButtonPress;
 
         public TextMeshProUGUI lognews;
@@ -796,11 +794,9 @@ namespace Picasso
                 //lognews.text = "Trigger is released\n";
             }
         }
-
         
         private void DrawPoints()
         {
- 
             //Draw  Lines that can snap to each Lines and Vertices from the lines
             if (targetDevice.TryGetFeatureValue(CommonUsages.triggerButton,
                     out TriggerButtonValue) && TriggerButtonValue)
@@ -817,11 +813,9 @@ namespace Picasso
                 //The Button is pressed 
                 else
                 {
-                    
                     currentLine.start.position = painterPosition.position;
                     currentLine.transform.parent = linesParent;
                     currentLine.draw_type = 4;
-              
                 }
             }
  

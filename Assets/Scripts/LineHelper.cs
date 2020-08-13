@@ -14,9 +14,7 @@ public class LineHelper : MonoBehaviour
     //public SteamVR_Behaviour_Pose rightController;
     public GameObject rightController;
     
-    
     public Transform painterPosition => rightController.transform.Find("RightControllerHitBox").transform;
-    
     
     public GameObject StaticHelper;
     
@@ -26,7 +24,6 @@ public class LineHelper : MonoBehaviour
     
     public GameObject player;
     
-
     
     [Tooltip("Event when the button starts being pressed")]
     public UnityEvent OnPress;
@@ -71,7 +68,6 @@ public class LineHelper : MonoBehaviour
         //helper follows the position of the painter
         Helper.transform.position = painterPosition.position;
         
-        
         if (targetDevice.TryGetFeatureValue(CommonUsages.triggerButton,
                     out TriggerButtonValue) && TriggerButtonValue)
         {
@@ -79,16 +75,13 @@ public class LineHelper : MonoBehaviour
                 Helper.SetActive(true);
                 StaticHelper.SetActive(true);
 
-
-
         }
         else
         {
                 Helper.SetActive(false);
                 StaticHelper.SetActive(false);
-            StaticHelper.transform.position = painterPosition.position; 
+                StaticHelper.transform.position = painterPosition.position; 
         }
-              
         
     }
 }
