@@ -6,7 +6,8 @@ using UnityEngine.UI;
 using UnityEngine.XR;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
-    
+using System;
+
 namespace Picasso
 {
     [System.Serializable]
@@ -185,7 +186,15 @@ namespace Picasso
             //string z = painterPosition.position.z.ToString("F"); 
             //string y = painterPosition.position.y.ToString("F");
             
-            string position_x = ((painterPosition.position.x - coord.transform.position.x) * 100f).ToString("F");
+            //float fc = (float)Math.Round(f * 100f) / 100f;
+
+
+
+            float position_x = (float) Math.Round(((painterPosition.position.x - coord.transform.position.x) * 100),0);
+                
+            string position_x_s = position_x.ToString("F"); 
+            
+            
             string position_y = ((painterPosition.position.y - coord.transform.position.y -0.07f) * 100f).ToString("F");
             string position_z = ((painterPosition.position.z - coord.transform.position.z - 0.03) * 100f).ToString("F");
             
@@ -193,7 +202,7 @@ namespace Picasso
             
             //lognews.text = "ForwardRay " + forwardRay;
                 
-            lineLengthLabel.text = "( "+position_x + " , "+position_z + " , " +position_y+" )";
+            lineLengthLabel.text = "( "+position_x_s + " , "+position_z + " , " +position_y+" )";
             /*
 
             targetDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out bool SecondaryButtonValue);
