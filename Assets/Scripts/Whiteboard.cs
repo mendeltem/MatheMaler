@@ -190,19 +190,21 @@ namespace Picasso
 
 
 
-            float position_x = (float) Math.Round(((painterPosition.position.x - coord.transform.position.x) * 100),0);
-                
-            string position_x_s = position_x.ToString("F"); 
+            double position_x = (double)((painterPosition.position.x - coord.transform.position.x) * 100);
+            
+            double position_x_r = Math.Round(position_x, 0, MidpointRounding.AwayFromZero);
+            
+            string position_x_s = position_x_r.ToString("F0"); 
             
             
-            string position_y = ((painterPosition.position.y - coord.transform.position.y -0.07f) * 100f).ToString("F");
-            string position_z = ((painterPosition.position.z - coord.transform.position.z - 0.03) * 100f).ToString("F");
+            string position_y = ((painterPosition.position.y - coord.transform.position.y -0.07f) * 100f).ToString("F0");
+            string position_z = ((painterPosition.position.z - coord.transform.position.z - 0.03) * 100f).ToString("F0");
             
             //lognews.text = lineHitObject.name;
             
             //lognews.text = "ForwardRay " + forwardRay;
                 
-            lineLengthLabel.text = "( "+position_x_s + " , "+position_z + " , " +position_y+" )";
+            lineLengthLabel.text = "X: "+position_x_s + " \nY: "+position_z + " \nZ: " +position_y+" ";
             /*
 
             targetDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out bool SecondaryButtonValue);

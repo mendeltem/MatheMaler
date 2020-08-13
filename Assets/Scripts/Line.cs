@@ -170,12 +170,12 @@ namespace Picasso
 			}
 
 
-			start_text.text  = "( "+start_position_x.ToString("F") +" , "+
-									start_position_z.ToString("F") +" , "+
-									start_position_y+" )";
-			end_text.text     = "( "+end_position_x.ToString("F") +" , "+
-									end_position_z.ToString("F") +" , "+
-									end_position_y+" )";									
+			start_text.text  = "( X: "+start_position_x.ToString("F0") +" , Y: "+
+									start_position_z.ToString("F0") +" , Z:"+
+									start_position_y.ToString("F0")+" )";
+			end_text.text     = "( X: "+end_position_x.ToString("F0") +" , Y: "+
+									end_position_z.ToString("F0") +" , Z:"+
+									end_position_y.ToString("F0")+" )";									
 
 
 		}
