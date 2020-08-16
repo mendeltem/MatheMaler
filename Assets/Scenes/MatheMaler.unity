@@ -189,9 +189,13 @@ MonoBehaviour:
   OnPress:
     m_PersistentCalls:
       m_Calls: []
+    m_CallsDirty: 1
   OnRelease:
     m_PersistentCalls:
       m_Calls: []
+    m_CallsDirty: 1
+  <IsPressed>k__BackingField: 0
+  PrimaryButtonValue: 0
   rightController: {fileID: 1751757126}
   lognews: {fileID: 2014951504}
 --- !u!114 &62611962
@@ -1831,7 +1835,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 625711397}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: 8231802031e3b6644af7869582d62039, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: cf99907e797a95c41b5ee01a8aadaa2f, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
@@ -1854,8 +1858,8 @@ VideoPlayer:
   m_ControlledAudioTrackCount: 1
   m_PlayOnAwake: 1
   m_SkipOnDrop: 1
-  m_Looping: 1
-  m_WaitForFirstFrame: 1
+  m_Looping: 0
+  m_WaitForFirstFrame: 0
   m_FrameReadyEventEnabled: 0
 --- !u!1 &671172349
 GameObject:
@@ -2561,6 +2565,8 @@ GameObject:
   m_Component:
   - component: {fileID: 924919265}
   - component: {fileID: 924919266}
+  - component: {fileID: 924919267}
+  - component: {fileID: 924919268}
   m_Layer: 0
   m_Name: Left Controller
   m_TagString: Untagged
@@ -2608,6 +2614,48 @@ MonoBehaviour:
   m_AnimateModel: 0
   m_ModelSelectTransition: 
   m_ModelDeSelectTransition: 
+--- !u!114 &924919267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 924919264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d3bacefd52cc26488ff0a2779cba1cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnPress:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRelease:
+    m_PersistentCalls:
+      m_Calls: []
+  pageNumber: 1
+  Image1: {fileID: 0}
+  videoPlayer: {fileID: 0}
+  lognews: {fileID: 0}
+--- !u!114 &924919268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 924919264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e085d5e39164917448e525965a7e7a28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnPress:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRelease:
+    m_PersistentCalls:
+      m_Calls: []
+  pageNumber: 1
+  lognews: {fileID: 1715751584}
 --- !u!1 &981145247
 GameObject:
   m_ObjectHideFlags: 0
@@ -3660,7 +3708,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1259281390}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a47ffd65e236b04f814da604bd980d7, type: 3}
+  m_Script: {fileID: 11500000, guid: 0b004f603f314c6468e22e5957e02e4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OnPress:
@@ -4225,9 +4273,13 @@ MonoBehaviour:
   OnPress:
     m_PersistentCalls:
       m_Calls: []
+    m_CallsDirty: 1
   OnRelease:
     m_PersistentCalls:
       m_Calls: []
+    m_CallsDirty: 1
+  <IsPressed>k__BackingField: 0
+  PrimaryButtonValue: 0
   rightController: {fileID: 1751757126}
   lognews: {fileID: 2014951504}
 --- !u!65 &1480025431
@@ -4254,6 +4306,7 @@ GameObject:
   - component: {fileID: 1503955317}
   - component: {fileID: 1503955319}
   - component: {fileID: 1503955318}
+  - component: {fileID: 1503955320}
   m_Layer: 0
   m_Name: Panel
   m_TagString: Untagged
@@ -4319,6 +4372,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1503955316}
   m_CullTransparentMesh: 0
+--- !u!114 &1503955320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1503955316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d3bacefd52cc26488ff0a2779cba1cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnPress:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRelease:
+    m_PersistentCalls:
+      m_Calls: []
+  pageNumber: 1
+  Image1: {fileID: 472861660}
+  videoPlayer: {fileID: 625711399}
+  lognews: {fileID: 1715751584}
 --- !u!1 &1505350979
 GameObject:
   m_ObjectHideFlags: 0
@@ -4752,9 +4827,13 @@ MonoBehaviour:
   OnPress:
     m_PersistentCalls:
       m_Calls: []
+    m_CallsDirty: 1
   OnRelease:
     m_PersistentCalls:
       m_Calls: []
+    m_CallsDirty: 1
+  <IsPressed>k__BackingField: 0
+  PrimaryButtonValue: 0
   rightController: {fileID: 1751757126}
   lognews: {fileID: 2014951504}
 --- !u!114 &1691401546
@@ -4879,7 +4958,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1715751583
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4918,7 +4997,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4987,13 +5066,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1715751584}
-    characterCount: 8
+    characterCount: 0
     spriteCount: 0
-    spaceCount: 1
-    wordCount: 2
+    spaceCount: 0
+    wordCount: 0
     linkCount: 0
-    lineCount: 1
-    pageCount: 1
+    lineCount: 0
+    pageCount: 0
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
@@ -5467,7 +5546,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: ea934ee3437475245a1a2229d68e94a3,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.467
+      value: 1.98
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: ea934ee3437475245a1a2229d68e94a3,
         type: 3}
@@ -6426,9 +6505,13 @@ MonoBehaviour:
   OnPress:
     m_PersistentCalls:
       m_Calls: []
+    m_CallsDirty: 1
   OnRelease:
     m_PersistentCalls:
       m_Calls: []
+    m_CallsDirty: 1
+  <IsPressed>k__BackingField: 0
+  PrimaryButtonValue: 0
   rightController: {fileID: 1751757126}
   lognews: {fileID: 2014951504}
 --- !u!114 &2024401686

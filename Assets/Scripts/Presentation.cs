@@ -52,7 +52,7 @@ public class Presentation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        lognews.text = pageNumber.ToString();
+        //lognews.text = pageNumber.ToString();
         
 		
         switch (pageNumber)
