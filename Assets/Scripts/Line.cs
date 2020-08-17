@@ -52,6 +52,8 @@ namespace Picasso
 		public TextMeshProUGUI start_text;
 		public TextMeshProUGUI end_text;
 		
+		private bool coloring;
+		
 		void Start()
 		{
 			coord = GameObject.FindWithTag("coord");
@@ -71,6 +73,8 @@ namespace Picasso
 			showVertices = true;
 			quadRenderer.material = material;
 			lineRenderer.material = material;
+			
+			
 		}
 
 		//GameObject newText = new GameObject(text.Replace(" ", "-"), typeof(RectTransform));
@@ -123,9 +127,9 @@ namespace Picasso
 
                 lineRenderer.startWidth  = width;
                 lineRenderer.endWidth    = width;
-                lineRenderer.material    = material;
-                lineRenderer.startColor  = material.color;
-                lineRenderer.endColor    = material.color;
+                //lineRenderer.material    = material;
+                //lineRenderer.startColor  = material.color;
+                //lineRenderer.endColor    = material.color;
             	}
 
 			}
@@ -139,6 +143,9 @@ namespace Picasso
                 lineRenderer.material = material;
                 lineRenderer.startColor = material.color;
                 lineRenderer.endColor = material.color;
+				
+				start.GetComponent<MeshRenderer>().enabled = false;
+		        end.GetComponent<MeshRenderer>().enabled = false;
 			}			
 			else if (draw_type == 3)
 			{

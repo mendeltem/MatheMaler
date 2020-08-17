@@ -44,11 +44,8 @@ namespace Picasso
         public Line currentLine;
         public Material material;
 
-
-
         public float width;
 
-        
         public PrimaryButtonEvent primaryButtonPress;
 
         public TextMeshProUGUI lognews;
@@ -69,14 +66,12 @@ namespace Picasso
         bool SecondaryButtonValue;
         bool PrimaryButtonValue;
         
-        
         public Ray forwardRay;
         public LayerMask toolboxLayer;
         public LayerMask UI;
         public GameObject toolboxHitObject;
         public GameObject th_box;
         public GameObject Laser;
-        
         
         public Toggle toggle;
         public Toggle toggle2;
@@ -86,13 +81,12 @@ namespace Picasso
         public Draggable hueDraggable;
         public Draggable saturationDraggable;
 */
-
         public Vector3 dir;
         public UnityEngine.Color temp_color;
         public GameObject line;
         public GameObject coord;
-
-        
+		
+		private bool coloring;
 
         void Avake()
         {
@@ -126,10 +120,8 @@ namespace Picasso
             {
                 targetDevice = devices[0];
             }
-            
-            
-            
-           
+			
+			coloring = false;
 
         }
 
@@ -164,8 +156,6 @@ namespace Picasso
                         //lognews.text = "DrawLine";
                         break;             
                     
-                        
-
                     default:
                         break;
                 }
@@ -186,16 +176,14 @@ namespace Picasso
             
             //float fc = (float)Math.Round(f * 100f) / 100f;
 
-
-
             double position_x = (double)((painterPosition.position.x - coord.transform.position.x) * 100);
             
             double position_x_r = Math.Round(position_x, 0, MidpointRounding.AwayFromZero);
             
             string position_x_s = position_x_r.ToString("F0"); 
             
-            
-            string position_y = ((painterPosition.position.y - coord.transform.position.y -0.07f) * 100f).ToString("F0");
+           
+            string position_y = ((painterPosition.position.y - coord.transform.position.y - 0.07f) * 100f).ToString("F0");
             string position_z = ((painterPosition.position.z - coord.transform.position.z - 0.03) * 100f).ToString("F0");
             
             //lognews.text = lineHitObject.name;
@@ -213,31 +201,31 @@ namespace Picasso
             if (targetDevice.TryGetFeatureValue(CommonUsages.primaryButton,
                 out PrimaryButtonValue) && PrimaryButtonValue)
             {
+				coloring = true;
                 if (!IsAPressed)
                 {
                     IsAPressed = true;
                     OnPress.Invoke();
                     currentLine = Instantiate(linePrefab).GetComponent<Line>();
-                    currentLine.tag = "DummyLine";
+                    currentLine.tag = "CurrentLine";
                     currentLine.boxCollider.enabled = false;
                     currentLine.end.GetComponent<SphereCollider>().enabled = false;
                     currentLine.start.GetComponent<SphereCollider>().enabled = false;
                     currentLine.start.position = new Vector3(0, 0, 0);
                     currentLine.end.position = new Vector3(0, 0, 0);
                     currentLine.transform.parent = DummyParent;
-
-                }
-                else
-                {
                     var color = material.color;
                     material = new Material(material.shader);
                     material.color = color;
                     currentLine.material = material;
+					currentLine.draw_type = 1;
                 }
+               
 
             }  // check for button release
             else if (IsAPressed)
             {
+				coloring = false;
                 IsAPressed = false;
                 OnRelease.Invoke();
                 
@@ -571,26 +559,33 @@ namespace Picasso
             if (targetDevice.TryGetFeatureValue(CommonUsages.triggerButton,
                     out TriggerButtonValue) && TriggerButtonValue)
             {
+				
+				
+				
                 // if start pressing, trigger event
                 if (!IsPressed)
                 {
                     IsPressed = true;
                     OnPress.Invoke();
+					
+					var color = material.color;
+                    material = new Material(material.shader);
+                    material.color = color;    
                     
                     //creating lineprefab
                     currentLine = Instantiate(linePrefab).GetComponent<Line>();
+					
+
+					
                     currentLine.start.position = painterPosition.position;
                     currentLine.transform.parent = linesParent;
                     currentLine.draw_type = 1;
                     currentLine.tag = "CurrentLine";
                     currentLine.width = width;
-                    
-                    var color = material.color;
-                    material = new Material(material.shader);
-                    material.color = color;    
-                    currentLine.material = material;
-                    
-                    
+					
+					
+					if (coloring==false)
+						currentLine.material = material;
                     
                     currentLine.boxCollider.enabled = false;
                     currentLine.end.GetComponent<SphereCollider>().enabled = false;
@@ -603,6 +598,8 @@ namespace Picasso
                             
                         var cs = go.GetComponent<Line>();
                         currentLine.start.position = cs.start.position;
+						
+						
                     }
 
                     if (lineHitObject.name == "End")
@@ -611,6 +608,8 @@ namespace Picasso
                         GameObject go = lineHitObject.transform.parent.gameObject;
                             
                         var cs = go.GetComponent<Line>();
+						
+						
                         currentLine.start.position = cs.end.position;
                     }
                     
@@ -629,6 +628,8 @@ namespace Picasso
                     //currentLine.meshCollider.enabled = false;
                     currentLine.end.GetComponent<SphereCollider>().enabled = false;
                     currentLine.start.GetComponent<SphereCollider>().enabled = false;
+					
+					
 
                     if (lineHitObject.name == "LineRenderer")
                     {
@@ -672,6 +673,9 @@ namespace Picasso
                 currentLine.end.GetComponent<SphereCollider>().enabled = true;
                 currentLine.start.GetComponent<SphereCollider>().enabled = true;
                 currentLine.tag = "Line";
+				
+				
+				
 
                 
                 lines.Add(currentLine);
