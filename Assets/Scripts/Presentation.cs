@@ -113,7 +113,7 @@ public class Presentation : MonoBehaviour
                 pageNumber++;
 				
 				
-				if (pageNumber > 4)
+				if (pageNumber > 2)
 				{
 					pageNumber=1;
 				}

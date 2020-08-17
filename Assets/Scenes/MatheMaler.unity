@@ -185,19 +185,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6649dd8161282454f98abb2ea7f3be62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggle: {fileID: 1505350981}
-  OnPress:
-    m_PersistentCalls:
-      m_Calls: []
-    m_CallsDirty: 1
-  OnRelease:
-    m_PersistentCalls:
-      m_Calls: []
-    m_CallsDirty: 1
-  <IsPressed>k__BackingField: 0
-  PrimaryButtonValue: 0
-  rightController: {fileID: 1751757126}
-  lognews: {fileID: 2014951504}
 --- !u!114 &62611962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2469,7 +2456,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: b9feda9497f0906409ca21ddd13662c6, type: 3}
+  m_Texture: {fileID: 2800000, guid: 7e9dac3f2744049499a1058ae919fb0b, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -2826,7 +2813,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 6cdec3b4dd575c04598140df9ad02763, type: 3}
+  m_Texture: {fileID: 2800000, guid: bcca5cf350c590f48a1dc68871bb3968, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -4269,19 +4256,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6649dd8161282454f98abb2ea7f3be62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggle: {fileID: 578871495}
-  OnPress:
-    m_PersistentCalls:
-      m_Calls: []
-    m_CallsDirty: 1
-  OnRelease:
-    m_PersistentCalls:
-      m_Calls: []
-    m_CallsDirty: 1
-  <IsPressed>k__BackingField: 0
-  PrimaryButtonValue: 0
-  rightController: {fileID: 1751757126}
-  lognews: {fileID: 2014951504}
 --- !u!65 &1480025431
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4823,19 +4797,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6649dd8161282454f98abb2ea7f3be62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggle: {fileID: 1188992111}
-  OnPress:
-    m_PersistentCalls:
-      m_Calls: []
-    m_CallsDirty: 1
-  OnRelease:
-    m_PersistentCalls:
-      m_Calls: []
-    m_CallsDirty: 1
-  <IsPressed>k__BackingField: 0
-  PrimaryButtonValue: 0
-  rightController: {fileID: 1751757126}
-  lognews: {fileID: 2014951504}
 --- !u!114 &1691401546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6501,19 +6462,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6649dd8161282454f98abb2ea7f3be62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggle: {fileID: 394119806}
-  OnPress:
-    m_PersistentCalls:
-      m_Calls: []
-    m_CallsDirty: 1
-  OnRelease:
-    m_PersistentCalls:
-      m_Calls: []
-    m_CallsDirty: 1
-  <IsPressed>k__BackingField: 0
-  PrimaryButtonValue: 0
-  rightController: {fileID: 1751757126}
-  lognews: {fileID: 2014951504}
 --- !u!114 &2024401686
 MonoBehaviour:
   m_ObjectHideFlags: 0
