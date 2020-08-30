@@ -51,6 +51,10 @@ namespace Picasso
         public TextMeshProUGUI lognews;
         public TextMeshProUGUI lineLengthLabel;
 
+        public TextMeshProUGUI x_vectorLabel;
+        public TextMeshProUGUI y_vectorLabel;
+        public TextMeshProUGUI z_vectorLabel;
+
         public GameObject red_sphere;
         [Tooltip("Event when the button starts being pressed")]
         public UnityEvent OnPress;
@@ -77,16 +81,31 @@ namespace Picasso
         public Toggle toggle2;
         public Toggle toggle3;
         public Toggle toggle4;
+
+
+
+        public GameObject Tutorial_trigger;
+        public GameObject Tutorial_abutton;
+        public GameObject Tutorial_bbutton;
+       
+        
+
         /*
         public Draggable hueDraggable;
         public Draggable saturationDraggable;
 */
         public Vector3 dir;
+
+        public Vector3 pp;
         public UnityEngine.Color temp_color;
         public GameObject line;
         public GameObject coord;
 		
 		private bool coloring;
+
+        double painter_position_x; 
+        double painter_position_y;
+        double painter_position_z;
 
         void Avake()
         {
@@ -161,46 +180,24 @@ namespace Picasso
                 }
 
             }
-            
-            /*
-            if (Physics.Raycast(forwardRay, out hit, 100f, toolboxLayer.value))
-            {
-                lognews.text = "ForwardRay HIT";
-            }
-            */
-            
 
-            //string x = painterPosition.position.x.ToString("F");
-            //string z = painterPosition.position.z.ToString("F"); 
-            //string y = painterPosition.position.y.ToString("F");
+            painter_position_x = ((painterPosition.position.x - coord.transform.position.x) * 100);
+            painter_position_y = ((painterPosition.position.y - coord.transform.position.y - 0.07f) * 100f);
+            painter_position_z = ((painterPosition.position.z - coord.transform.position.z - 0.03) * 100f);
             
-            //float fc = (float)Math.Round(f * 100f) / 100f;
+            x_vectorLabel.text = "X: "+painter_position_x.ToString("F0");
+            y_vectorLabel.text = "Y: "+painter_position_z.ToString("F0");
+            z_vectorLabel.text = "Z: "+painter_position_y.ToString("F0");
 
-            double position_x = (double)((painterPosition.position.x - coord.transform.position.x) * 100);
-            
-            double position_x_r = Math.Round(position_x, 0, MidpointRounding.AwayFromZero);
-            
-            string position_x_s = position_x_r.ToString("F0"); 
-            
-           
-            string position_y = ((painterPosition.position.y - coord.transform.position.y - 0.07f) * 100f).ToString("F0");
-            string position_z = ((painterPosition.position.z - coord.transform.position.z - 0.03) * 100f).ToString("F0");
-            
-            //lognews.text = lineHitObject.name;
-            
-            //lognews.text = "ForwardRay " + forwardRay;
-                
-            lineLengthLabel.text = "X: "+position_x_s + " \nY: "+position_z + " \nZ: " +position_y+" ";
-            /*
-
-            targetDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out bool SecondaryButtonValue);
-            targetDevice.TryGetFeatureValue(CommonUsages.primaryButton, out bool PrimaryButtonValue);
-            targetDevice.TryGetFeatureValue(CommonUsages.triggerButton, out bool TriggerButtonValue);
-*/
             //create dummy Line for color change
             if (targetDevice.TryGetFeatureValue(CommonUsages.primaryButton,
                 out PrimaryButtonValue) && PrimaryButtonValue)
             {
+
+                Tutorial_abutton.SetActive(false);
+
+                
+
 				coloring = true;
                 if (!IsAPressed)
                 {
@@ -235,10 +232,6 @@ namespace Picasso
             }
         }
 
-        void FixedUpdate()
-        {
-            
-        }
 
         private void RaycastToolbox()
         {
@@ -345,36 +338,6 @@ namespace Picasso
                 }
             }
             
-            
-         /*   
-            if (Physics.Raycast(forwardRay, out hit, 100f, toolboxLayer.value))
-            {
-                lognews.text = "tool: " +hit.transform.gameObject.layer.ToString("F");
-                RayInteractor.GetComponent<XRInteractorLineVisual>().enabled = true;
-            }
-            else
-            {
-                lognews.text = "else: " + hit.transform.gameObject.layer.ToString("F");
-                RayInteractor.GetComponent<XRInteractorLineVisual>().enabled = false;
-            }
-            */
-            
-            /*
-            if (Physics.Raycast(forwardRay, out hit, Mathf.Infinity)) {
-                
-                lognews.text = hit.transform.gameObject.layer.ToString("F");
-                     
-                if (hit.transform.gameObject.layer == toolboxLayer  ) {
-                    toolboxHitObject = hit.collider.gameObject;
-                    RayInteractor.GetComponent<XRInteractorLineVisual>().enabled = true;
-                } else
-                {
-                    toolboxHitObject = null;
-                    RayInteractor.GetComponent<XRInteractorLineVisual>().enabled = false;
-                }
-            }
-            */
-
 
         }
         private void Delete()
@@ -385,6 +348,8 @@ namespace Picasso
                 if (targetDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out bool SecondaryButtonValue) &&
                     SecondaryButtonValue)
                 {
+
+                    Tutorial_bbutton.SetActive(false);
 
                     if (lineHitObject.name == "LineRenderer" || lineHitObject.name == "Start" || lineHitObject.name == "End")
                     {
@@ -409,32 +374,6 @@ namespace Picasso
 
                         Destroy(line);
 
-
-                        //currentLine.boxCollider.enabled = false;
-
-                        //currentLine.start.GetComponent<SphereCollider>().enabled = false;
-
-                        //line.boxCollider.enabled = false;
-                        //line.end.GetComponent<SphereCollider>().enabled = false;
-                        //line.start.GetComponent<SphereCollider>().enabled = false;
-                        //transform.parent=null;
-                        //line.SetActive(false);
-                        //GameObject go = lineHitObject.transform.parent.gameObject;
-                        //var cs = go.GetComponent<Line>();
-                        //cs.start.position = new Vector3(0, 0, 0);
-                        //cs.end.position = new Vector3(0, 0, 0);
-
-
-                        //cs.boxCollider.enabled = false;
-                        //cs.end.GetComponent<SphereCollider>().enabled = false;
-                        //cs.start.GetComponent<SphereCollider>().enabled = false;
-
-                        //go.SetActive(false);
-                        //cs.end.parent.gameObject.SetActive(false);
-                        //cs.start.parent.gameObject.SetActive(false);
-
-                        //lognews.text = " press B Button\n";
-
                     }
 
                 }
@@ -447,6 +386,8 @@ namespace Picasso
             if (targetDevice.TryGetFeatureValue(CommonUsages.triggerButton,
                     out TriggerButtonValue) && TriggerButtonValue)
             {
+
+                Tutorial_trigger.SetActive(false);
                 // if start pressing, trigger event
                 if (!IsPressed)
                 {
@@ -559,7 +500,7 @@ namespace Picasso
             if (targetDevice.TryGetFeatureValue(CommonUsages.triggerButton,
                     out TriggerButtonValue) && TriggerButtonValue)
             {
-				
+				Tutorial_trigger.SetActive(false);
 				
 				
                 // if start pressing, trigger event
@@ -690,6 +631,7 @@ namespace Picasso
             if (targetDevice.TryGetFeatureValue(CommonUsages.triggerButton,
                     out TriggerButtonValue) && TriggerButtonValue)
             {
+                Tutorial_trigger.SetActive(false);
                 // if start pressing, trigger event
                 if (!IsPressed)
                 {
@@ -799,12 +741,16 @@ namespace Picasso
             }
         }
         
+        int snap = 0;
+
         private void DrawPoints()
         {
-            //Draw  Lines that can snap to each Lines and Vertices from the lines
+            //Draw Points that can snap at every (10th | 10th | 10th) points. 
+
             if (targetDevice.TryGetFeatureValue(CommonUsages.triggerButton,
                     out TriggerButtonValue) && TriggerButtonValue)
             {
+                Tutorial_trigger.SetActive(false);
                 // if start pressing, trigger event
                 if (!IsPressed)
                 {
@@ -812,14 +758,49 @@ namespace Picasso
                     currentLine = Instantiate(linePrefab).GetComponent<Line>();
                     IsPressed = true;
                     OnPress.Invoke();
-                    
+
                 }
                 //The Button is pressed 
                 else
                 {
-                    currentLine.start.position = painterPosition.position;
+
+                    if ((painter_position_x % 10 < 2 || 
+                         painter_position_x % 10 > 8  ) && 
+                        ( painter_position_y % 10 < 1 ||
+                          painter_position_y % 10 > 8  )&& 
+                         (painter_position_z % 10 < 1 ||
+                         painter_position_z % 10 > 8)  
+                         ){
+
+
+                        if (snap == 0){
+                            var temp_x = (int)Math.Round(currentLine.start_position_x*100) ;
+
+                            var x_p = (int)Math.Round(painter_position_x/10)*10;
+                            var y_p = (int)Math.Round(painter_position_y/10)*10;
+
+                            var z_p = (int)Math.Round(painter_position_z/10)*10;
+
+                            var x =  x_p * 0.01f  + coord.transform.position.x;
+                            var y =  y_p * 0.01f  + coord.transform.position.y + 0.07f;
+                            var z =  z_p * 0.01f  + coord.transform.position.z + 0.03f;
+
+
+                            pp = new Vector3(x , y, z);
+
+                            currentLine.start.position =  pp;
+                        }
+
+                         snap = 1;
+                    }else{
+                        currentLine.start.position = painterPosition.position;
+
+                        snap = 0;
+                    }
+
                     currentLine.transform.parent = linesParent;
                     currentLine.draw_type = 4;
+
                 }
             }
  

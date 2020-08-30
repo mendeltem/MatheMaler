@@ -49,8 +49,13 @@ namespace Picasso
 		public float end_position_y;
 		public float end_position_z;
 
-		public TextMeshProUGUI start_text;
-		public TextMeshProUGUI end_text;
+		public TextMeshProUGUI start_text_x;
+		public TextMeshProUGUI start_text_y;
+		public TextMeshProUGUI start_text_z;
+
+		public TextMeshProUGUI end_text_x;
+		public TextMeshProUGUI end_text_y;
+		public TextMeshProUGUI end_text_z;
 		
 		private bool coloring;
 		
@@ -97,14 +102,14 @@ namespace Picasso
             var P2 = end.position;
             
             //position_x = end.position.x - player.transform.position.x - coord.transform.position.x;
-            end_position_x = (end.position.x - coord.transform.position.x) * 100f;
-            end_position_y = (end.position.y - coord.transform.position.y - 0.07f) * 100f;
-            end_position_z = (end.position.z - coord.transform.position.z- 0.03f) * 100f;
+            end_position_x = (end.position.x - coord.transform.position.x);
+            end_position_y = (end.position.y - coord.transform.position.y - 0.07f);
+            end_position_z = (end.position.z - coord.transform.position.z- 0.03f);
 
 
-            start_position_x = (start.position.x - coord.transform.position.x) * 100f;
-            start_position_y = (start.position.y - coord.transform.position.y - 0.07f) * 100f;
-            start_position_z = (start.position.z - coord.transform.position.z- 0.03f) * 100f;
+            start_position_x = (start.position.x - coord.transform.position.x);
+            start_position_y = (start.position.y - coord.transform.position.y - 0.07f);
+            start_position_z = (start.position.z - coord.transform.position.z- 0.03f);
             
             var P21 = P2 - P1;
 
@@ -177,14 +182,16 @@ namespace Picasso
 			}
 
 
-			start_text.text  = "( X: "+start_position_x.ToString("F0") +" , Y: "+
-									start_position_z.ToString("F0") +" , Z:"+
-									start_position_y.ToString("F0")+" )";
-			end_text.text     = "( X: "+end_position_x.ToString("F0") +" , Y: "+
-									end_position_z.ToString("F0") +" , Z:"+
-									end_position_y.ToString("F0")+" )";									
+			start_text_x.text  = " "+(start_position_x*100).ToString("F0");
+			start_text_y.text  = " "+(start_position_z*100).ToString("F0");
+			start_text_z.text  = " "+(start_position_y*100).ToString("F0");
 
 
+			end_text_x.text    = " "+(end_position_x*100).ToString("F0");
+			end_text_y.text    = " "+(end_position_z*100).ToString("F0");
+			end_text_z.text    = " "+(end_position_y*100).ToString("F0");
+
+							
 		}
         
         public bool showVertices
@@ -193,8 +200,8 @@ namespace Picasso
 	        {
 		        start.GetComponent<MeshRenderer>().enabled = true;
 		        end.GetComponent<MeshRenderer>().enabled = true;
-		        start.transform.localScale  = new Vector3(0.03f, 0.03f, 0.03f);
-		        end.transform.localScale  = new Vector3(0.03f, 0.03f, 0.03f);
+		        start.transform.localScale  = new Vector3(0.02f, 0.02f, 0.02f);
+		        end.transform.localScale  = new Vector3(0.02f, 0.02f, 0.02f);
 	        }
         }
 

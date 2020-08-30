@@ -20,6 +20,10 @@ public class Presentation : MonoBehaviour
 
     bool gripButtonValue;
 
+    public GameObject Tutorial_grab;
+
+    
+
     private InputDevice targetDevice;
 
     public int pageNumber = 1;
@@ -106,6 +110,7 @@ public class Presentation : MonoBehaviour
         if (targetDevice.TryGetFeatureValue(CommonUsages.gripButton,
             out gripButtonValue) && gripButtonValue)
         {
+            Tutorial_grab.SetActive(false);
             if (!IsAPressed)
             {
                 IsAPressed = true;
