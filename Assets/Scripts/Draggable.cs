@@ -51,7 +51,7 @@ public class Draggable : MonoBehaviour
 
 	void FixedUpdate()
 	{
-
+        //hier wurde die Funktion nach Button und raycast angepasst
         if (targetDevice.TryGetFeatureValue(CommonUsages.primaryButton,
                     out PrimaryButtonValue) && PrimaryButtonValue)
             {

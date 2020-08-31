@@ -26,15 +26,10 @@ public class Control : MonoBehaviour
 
     private InputDevice targetDevice;
 
-    public int pageNumber = 1;
-    
-
-    public TextMeshProUGUI lognews;
     // Start is called before the first frame update
     void Start()
     {
-
-        lognews.text = "";
+        // Die Buttons werden aufgelistet um darauf zugreifen zu können
         List<InputDevice> devices = new List<InputDevice>();
         InputDeviceCharacteristics leftControllerCharacteristics =
             InputDeviceCharacteristics.Left | InputDeviceCharacteristics.Controller;
@@ -50,10 +45,8 @@ public class Control : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        lognews.text = pageNumber.ToString();
-        
-		
-        //create dummy Line for color change
+        //Wenn auf linke Steuerung die Taste X gedrückt wird gibt es ein Reload
+
         if (targetDevice.TryGetFeatureValue(CommonUsages.primaryButton,
             out PrimaryButtonValue) && PrimaryButtonValue)
         {
@@ -61,15 +54,10 @@ public class Control : MonoBehaviour
             {
                 IsAPressed = true;
                 OnPress.Invoke();
-                pageNumber++;
+
 				
-				
+				//neu laden der Szene
 				SceneManager.LoadScene("MatheMaler"); 
-				
-				if (pageNumber > 4)
-				{
-					pageNumber=1;
-				}
 				
             }
            

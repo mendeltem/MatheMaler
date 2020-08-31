@@ -8,11 +8,6 @@ namespace Picasso
     {
         public GameObject camera;
 
-        void Avake()
-        {
-            
-        }
-
         
         void Update()
         {

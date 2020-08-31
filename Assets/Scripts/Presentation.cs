@@ -21,26 +21,17 @@ public class Presentation : MonoBehaviour
     bool gripButtonValue;
 
     public GameObject Tutorial_grab;
-
-    
-
     private InputDevice targetDevice;
-
     public int pageNumber = 1;
-    
     public RawImage Image1;
 	public RawImage Image2;
 	public RawImage Image3;
 	public RawImage Image4;
 	public RawImage Image5;
-	
-
-    public TextMeshProUGUI lognews;
     // Start is called before the first frame update
     void Start()
     {
-
-        lognews.text = "";
+        // Die Buttons werden aufgelistet um darauf zugreifen zu können
         List<InputDevice> devices = new List<InputDevice>();
         InputDeviceCharacteristics rightControllerCharacteristics =
             InputDeviceCharacteristics.Right | InputDeviceCharacteristics.Controller;
@@ -56,12 +47,11 @@ public class Presentation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //lognews.text = pageNumber.ToString();
-        
-		
+        //Aufgabenstellungen weden als Bilder geladen und werden mit der Grab Taste umgeblättert
         switch (pageNumber)
         {
 			case 1:
+                //Bilder werden aktiviert und deaktivert, je nach Seitenzahl
 				Image1.enabled = true;
 				Image2.enabled = false;
 				Image3.enabled = false;
@@ -117,7 +107,7 @@ public class Presentation : MonoBehaviour
                 OnPress.Invoke();
                 pageNumber++;
 				
-				
+				//Seitenzahl wechsel
 				if (pageNumber > 2)
 				{
 					pageNumber=1;

@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR;
 using UnityEngine.Events;
-
+namespace Picasso
+{
 public class LineHelper : MonoBehaviour
 {
     public Material material;
@@ -37,6 +38,8 @@ public class LineHelper : MonoBehaviour
     bool TriggerButtonValue;
         
     private InputDevice targetDevice;
+
+    public PaintMode paintMode;
     
     private void Start()
     {
@@ -59,29 +62,29 @@ public class LineHelper : MonoBehaviour
         //trigger = SteamVR_Input.GetAction<SteamVR_Action_Boolean>("InteractUI");
         Helper.SetActive(false);
         StaticHelper.SetActive(false);
-
-        //Coordinate.transform.position = player.transform.position + new Vector3(-0.3f, 1, 0.5f);
     }
     
     void Update()
     {
-        //helper follows the position of the painter
+        //Hilfslinie verfolgt den Pinselpunkt
         Helper.transform.position = painterPosition.position;
         
         if (targetDevice.TryGetFeatureValue(CommonUsages.triggerButton,
                     out TriggerButtonValue) && TriggerButtonValue)
         {
-
+                //wenn die Zeichentaste gedrück wurde aktivieren sich die Hilfslinien
                 Helper.SetActive(true);
                 StaticHelper.SetActive(true);
+               
 
         }
         else
         {
+                //beim loslassen deaktivieren sich die Hilfslinien
                 Helper.SetActive(false);
                 StaticHelper.SetActive(false);
                 StaticHelper.transform.position = painterPosition.position; 
         }
         
     }
-}
+}}

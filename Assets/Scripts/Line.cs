@@ -21,7 +21,7 @@ namespace Picasso
         
 		public Transform pivot;
 
-		public int draw_type;
+		public string draw_type;
 
         public float width;
 
@@ -56,42 +56,38 @@ namespace Picasso
 		public TextMeshProUGUI end_text_x;
 		public TextMeshProUGUI end_text_y;
 		public TextMeshProUGUI end_text_z;
+
+
+		public BoxCollider boxCollider;
+		public MeshCollider meshCollider;
 		
 		private bool coloring;
+
+		public float radius;
+
 		
 		void Start()
 		{
+			// Suche nach dem Koordiantensystem
 			coord = GameObject.FindWithTag("coord");
-			
-			//player=coord.transform.parent.gameObject;
-			
 			lineRenderer = GetComponent<LineRenderer>();
 			boxCollider = quad.GetComponent<BoxCollider>();
-
-			//meshCollider = quad.GetComponent<BoxCollider>();
-
-			//end.SphereCollider.enabled = false;
-            
 			boxCollider.enabled = false;
+			meshCollider = quad.GetComponent<MeshCollider>();
+			meshCollider.enabled = false;
 			quadRenderer = quad.GetComponent<MeshRenderer>();
-
 			showVertices = true;
 			quadRenderer.material = material;
 			lineRenderer.material = material;
 			
-			
 		}
 
-		//GameObject newText = new GameObject(text.Replace(" ", "-"), typeof(RectTransform));
-		
-        public BoxCollider boxCollider;
-
-		
 
         public Vector3 boxScale = Vector3.one;
         
         public MeshRenderer quadRenderer;
         
+		//die länge der Linie wird berechnet
         public float linelength => (end.position - start.position).magnitude;
         
         public void Update()
@@ -100,8 +96,9 @@ namespace Picasso
             // http://answers.unity.com/answers/554566/view.html
             var P1 = start.position;
             var P2 = end.position;
-            
-            //position_x = end.position.x - player.transform.position.x - coord.transform.position.x;
+
+
+            //Ermittlung der lokalen Postition der Punkte 
             end_position_x = (end.position.x - coord.transform.position.x);
             end_position_y = (end.position.y - coord.transform.position.y - 0.07f);
             end_position_z = (end.position.z - coord.transform.position.z- 0.03f);
@@ -111,35 +108,41 @@ namespace Picasso
             start_position_y = (start.position.y - coord.transform.position.y - 0.07f);
             start_position_z = (start.position.z - coord.transform.position.z- 0.03f);
             
+			//erechnung von Linienvektor
             var P21 = P2 - P1;
 
 			var pivot = start.position;
 
-			
-			//var newTextComp = newText.AddComponent<Text>();
-
-			if (draw_type ==1)
+			if (draw_type =="straighline")
 			{
+				//Zeichne eine Linie mit Quads
             	quad.transform.position   = P1 + P21 / 2.0f;
             	quad.transform.localScale = new Vector3(width, P21.magnitude, width);
             	quad.transform.up         = P21;
+				//Die BoxCollider sollten Kürze aber dafür länger sein um die Punkten nicht im Wege zu stehen
                 boxCollider.size          =  new Vector3(3f, 0.8f, 3f);
 
             	if (lineRenderer.enabled)
             	{
+					//Zeichne eine Linie mit Linerenderer
+					lineRenderer.SetPositions(new[] {start.position, end.position});
+					lineRenderer.startWidth  = width;
+					lineRenderer.endWidth    = width;
 
-                lineRenderer.SetPositions(new[] {start.position, end.position});
-
-                lineRenderer.startWidth  = width;
-                lineRenderer.endWidth    = width;
-                //lineRenderer.material    = material;
-                //lineRenderer.startColor  = material.color;
-                //lineRenderer.endColor    = material.color;
             	}
+				//Die Vektor Angaben von den Punkten
+				start_text_x.text  = " "+(start_position_x*100).ToString("F0");
+				start_text_y.text  = " "+(start_position_z*100).ToString("F0");
+				start_text_z.text  = " "+(start_position_y*100).ToString("F0");
+
+				end_text_x.text    = " "+(end_position_x*100).ToString("F0");
+				end_text_y.text    = " "+(end_position_z*100).ToString("F0");
+				end_text_z.text    = " "+(end_position_y*100).ToString("F0");
 
 			}
-			else if (draw_type == 2)
+			else if (draw_type == "free")
 			{
+				//zeichne Frei
                 lineRenderer.SetVertexCount(numClicks + 1);
                 lineRenderer.SetPosition(numClicks, end.position );
                 numClicks++;
@@ -148,62 +151,75 @@ namespace Picasso
                 lineRenderer.material = material;
                 lineRenderer.startColor = material.color;
                 lineRenderer.endColor = material.color;
-				
+
 				start.GetComponent<MeshRenderer>().enabled = false;
-		        end.GetComponent<MeshRenderer>().enabled = false;
+		        end.GetComponent<MeshRenderer>().enabled = true;
+				end.GetComponent<MeshRenderer>().material = material;
+				//der Endpunkt sollte etwas kleiner sein.
+				end.transform.localScale  = new Vector3(0.008f, 0.008f, 0.008f);
+
 			}			
-			else if (draw_type == 3)
+			else if (draw_type == "circle")
 			{
-            	quad.transform.position   = P1 + P21 / 2.0f;
-            	quad.transform.localScale = new Vector3(width, P21.magnitude, width);
-            	quad.transform.up         = P21;
-                boxCollider.size          =  new Vector3(3f, 0.8f, 3f);
+				var segments = 360;
+				lineRenderer.useWorldSpace = false;
+				lineRenderer.startWidth = width;
+				lineRenderer.endWidth = width;
+				lineRenderer.positionCount = segments + 1;
 
-            	if (lineRenderer.enabled)
-            	{
+				var pointCount = segments + 1; // add extra point to make startpoint and endpoint the same to close the circle
+				var points = new Vector3[pointCount];
 
-				Vector3 dir = end.position - start.position;
 
-				Vector3 extended_vector =  dir * 1000f;
+				for (int i = 0; i < pointCount; i++)
+				{
+					var rad = Mathf.Deg2Rad * (i * 360f / segments);
+					points[i] = new Vector3(Mathf.Sin(rad) * radius, 0, Mathf.Cos(rad) * radius);
+				}
 
-				lineRenderer.SetPositions(new[] {start.position, end.position + extended_vector});
+				lineRenderer.SetPositions(points);
 
-                lineRenderer.startWidth = width;
-                lineRenderer.endWidth = width;
-                lineRenderer.material = material;
-                lineRenderer.startColor = material.color;
-                lineRenderer.endColor = material.color;
-            	}
+				//Die Vektor Angaben von den Punkten
+				start_text_x.text  = " "+(start_position_x*100).ToString("F0");
+				start_text_y.text  = " "+(start_position_z*100).ToString("F0");
+				start_text_z.text  = " "+(start_position_y*100).ToString("F0");
+
+
+				end_text_x.text    = " "+(end_position_x*100).ToString("F0");
+				end_text_y.text    = " "+(end_position_z*100).ToString("F0");
+				end_text_z.text    = " "+(end_position_y*100).ToString("F0");
 			}
-			else if (draw_type == 4)
+			else if (draw_type == "points")
 			{
-            	
+				//Zeichne die Punkte
+
+            	//Die Vektor Angaben von den Punkten
+				start_text_x.text  = " "+(start_position_x*100).ToString("F0");
+				start_text_y.text  = " "+(start_position_z*100).ToString("F0");
+				start_text_z.text  = " "+(start_position_y*100).ToString("F0");
+
+
+				end_text_x.text    = " "+(end_position_x*100).ToString("F0");
+				end_text_y.text    = " "+(end_position_z*100).ToString("F0");
+				end_text_z.text    = " "+(end_position_y*100).ToString("F0");
             	
 			}
-
-
-			start_text_x.text  = " "+(start_position_x*100).ToString("F0");
-			start_text_y.text  = " "+(start_position_z*100).ToString("F0");
-			start_text_z.text  = " "+(start_position_y*100).ToString("F0");
-
-
-			end_text_x.text    = " "+(end_position_x*100).ToString("F0");
-			end_text_y.text    = " "+(end_position_z*100).ToString("F0");
-			end_text_z.text    = " "+(end_position_y*100).ToString("F0");
-
-							
+				
 		}
         
         public bool showVertices
         {
 	        set
 	        {
+				//Bestimmung der Größe von Start und Endpunkten
 		        start.GetComponent<MeshRenderer>().enabled = true;
 		        end.GetComponent<MeshRenderer>().enabled = true;
 		        start.transform.localScale  = new Vector3(0.02f, 0.02f, 0.02f);
 		        end.transform.localScale  = new Vector3(0.02f, 0.02f, 0.02f);
 	        }
         }
+
+
 
 
     }
