@@ -120,7 +120,21 @@ namespace Picasso
             //Laser wird nur sichtbar wenn auf Toolbox gezeigt wird
             RaycastToolbox();
             
+            //Die Pinselpunkt Position im Verhältniss zu Koordinatensystem und die Umrechnung
+            painter_position_x = ((painterPosition.position.x - coord.transform.position.x) * 100);
+            painter_position_y = ((painterPosition.position.y - coord.transform.position.y - 0.07f) * 100f);
+            painter_position_z = ((painterPosition.position.z - coord.transform.position.z - 0.03) * 100f);
             
+            //Vektorangaben zum Pinselpunkt Position
+
+            //if (isDrawing == false){
+            x_vectorLabel.text = "X: "+painter_position_x.ToString("F0");
+            y_vectorLabel.text = "Y: "+painter_position_z.ToString("F0");
+            z_vectorLabel.text = "Z: "+painter_position_y.ToString("F0");
+
+            //}
+
+
             if (toolboxHitObject == null)
             {
                 //Zeichenmode auswahl
@@ -154,15 +168,8 @@ namespace Picasso
             //zum Debuggen 
             //lognews.text = lineHitObject.name;
 
-            //Die Pinselpunkt Position im Verhältniss zu Koordinatensystem und die Umrechnung
-            painter_position_x = ((painterPosition.position.x - coord.transform.position.x) * 100);
-            painter_position_y = ((painterPosition.position.y - coord.transform.position.y - 0.07f) * 100f);
-            painter_position_z = ((painterPosition.position.z - coord.transform.position.z - 0.03) * 100f);
-            
-            //Vektorangaben zum Pinselpunkt Position
-            x_vectorLabel.text = "X: "+painter_position_x.ToString("F0");
-            y_vectorLabel.text = "Y: "+painter_position_z.ToString("F0");
-            z_vectorLabel.text = "Z: "+painter_position_y.ToString("F0");
+
+
 
             //Erzeugt ein Dummy Linie, dessen Farbe sich ändern sollte statt des vor kurzem erzeugten Linie
             //Es da ist um ein Bug zu bekämpfen
@@ -357,6 +364,7 @@ namespace Picasso
             {
                 //Hilfestellung auf der Rechte Steuerung wird unsichtbar wenn mann die Tasten benutzt
                 Tutorial_trigger.SetActive(false);
+                isDrawing = true;
                 // if start pressing, trigger event
                 if (!IsPressed)
                 {
@@ -364,7 +372,6 @@ namespace Picasso
                     OnPress.Invoke();
                     
                     //creating lineprefab
-                    isDrawing = true;
                     //erzeuge ein LinePrefab GameObjekt und hole den Komponent Linie
                     currentLine = Instantiate(linePrefab).GetComponent<Line>();
                     
@@ -475,7 +482,7 @@ namespace Picasso
             {
                 //Hilfestellung auf der Rechte Steuerung wird unsichtbar wenn mann die Tasten benutzt
 				Tutorial_trigger.SetActive(false);
-				
+				isDrawing = true;
                 // if start pressing, trigger event
                 if (!IsPressed)
                 {
@@ -565,6 +572,7 @@ namespace Picasso
             // check for button release
             else if (IsPressed)
             {
+                isDrawing = false;
                 IsPressed = false;
                 OnRelease.Invoke();
                 currentLine.boxCollider.enabled = true;
@@ -576,8 +584,6 @@ namespace Picasso
             }
         }
 
-        
-
         private void DrawCircle()
         {
 
@@ -588,6 +594,7 @@ namespace Picasso
             {
                 //Hilfestellung auf der Rechte Steuerung wird unsichtbar wenn mann die Tasten benutzt
                 Tutorial_trigger.SetActive(false);
+                isDrawing = true;
                 // if start pressing, trigger event
                 if (!IsPressed)
                 {
@@ -618,27 +625,53 @@ namespace Picasso
                     currentCircle.transform.parent = linesParent;
                     currentCircle.tag = "Line";
 
+
+
                     var pointCount = segments + 1; // add extra point to make startpoint and endpoint the same to close the circle
                     var points = new Vector3[pointCount];
 
+                    float deg = 90f;
+                    
+                    dir =  start - end;
 
+                    float ll  =  radiuslength * 10000;
+
+                    lognews.text = "b: "  + radiuslength + "\n  a: " + ll;
                     for (int i = 0; i < pointCount; i++)
                     {
-                        var rad = Mathf.Deg2Rad * (i * 360f / segments);
+                        var rad = Mathf.Deg2Rad * (i * 360f / segments) ;
+
                         points[i] = new Vector3(Mathf.Sin(rad) * radiuslength, 0, Mathf.Cos(rad) * radiuslength);
                     }
+                    //MeshCollider meshCollider = currentCircle.gameObject.GetComponent<MeshCollider>();
+                    //Mesh mesh = new Mesh();
 
+                    //meshCollider.transform.rotation  = currentCircle.transform.rotation;
+                    //currentCircle.BakeMesh(mesh, true);
+                    //meshCollider.sharedMesh = mesh;
+                    //meshCollider.transform.rotation  = painterPosition.transform.rotation;
+                    
+ 
                     currentCircle.SetPositions(points);
+                    currentCircle.transform.rotation  = painterPosition.transform.rotation;
+                    
+                    x_vectorLabel.text =  "";
+                    y_vectorLabel.text = "Radius Length: "+(radiuslength*100).ToString("F0")+" cm";
+                    z_vectorLabel.text = "";
+
+                    
                 }
             }
  
             // check for button release
             else if (IsPressed)
             {
+                isDrawing = false;
                 IsPressed = false;
                 OnRelease.Invoke();
-  
-                MeshCollider meshCollider = currentCircle.gameObject.GetComponent<MeshCollider>();
+
+                MeshCollider meshCollider = currentCircle.gameObject.AddComponent<MeshCollider>();
+
                 Mesh mesh = new Mesh();
                 currentCircle.BakeMesh(mesh, true);
                 meshCollider.sharedMesh = mesh;

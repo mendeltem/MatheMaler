@@ -2963,9 +2963,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 711877041}
-  - component: {fileID: 711877043}
   - component: {fileID: 711877042}
   - component: {fileID: 711877044}
+  - component: {fileID: 711877043}
   m_Layer: 0
   m_Name: CurrentCircle
   m_TagString: Line
@@ -3003,19 +3003,13 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!64 &711877043
-MeshCollider:
+--- !u!33 &711877043
+MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 711877040}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
   m_Mesh: {fileID: 0}
 --- !u!120 &711877044
 LineRenderer:
@@ -4113,21 +4107,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d3bacefd52cc26488ff0a2779cba1cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnPress:
-    m_PersistentCalls:
-      m_Calls: []
-    m_CallsDirty: 1
-  OnRelease:
-    m_PersistentCalls:
-      m_Calls: []
-    m_CallsDirty: 1
-  <IsPressed>k__BackingField: 0
-  <IsAPressed>k__BackingField: 0
-  gripButtonValue: 0
-  pageNumber: 1
-  Image1: {fileID: 0}
-  videoPlayer: {fileID: 0}
-  lognews: {fileID: 0}
 --- !u!114 &924919268
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4686,9 +4665,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 067fb217839381a49ba41058f71b1197, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rightTeleportRay: {fileID: 1950296555}
-  teleportActivationButton: 14
-  activationThreshold: 0.1
 --- !u!1 &1069926768
 GameObject:
   m_ObjectHideFlags: 0
@@ -6343,7 +6319,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1294141240
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7118,21 +7094,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d3bacefd52cc26488ff0a2779cba1cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnPress:
-    m_PersistentCalls:
-      m_Calls: []
-    m_CallsDirty: 1
-  OnRelease:
-    m_PersistentCalls:
-      m_Calls: []
-    m_CallsDirty: 1
-  <IsPressed>k__BackingField: 0
-  <IsAPressed>k__BackingField: 0
-  gripButtonValue: 0
-  pageNumber: 1
-  Image1: {fileID: 472861660}
-  videoPlayer: {fileID: 625711399}
-  lognews: {fileID: 0}
 --- !u!1 &1505350979
 GameObject:
   m_ObjectHideFlags: 0
@@ -9470,6 +9431,7 @@ MonoBehaviour:
   OnRelease:
     m_PersistentCalls:
       m_Calls: []
+  paintMode: 0
 --- !u!1 &2024401682
 GameObject:
   m_ObjectHideFlags: 0
