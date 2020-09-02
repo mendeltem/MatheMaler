@@ -47,6 +47,8 @@ namespace Picasso
         public TextMeshProUGUI x_vectorLabel;
         public TextMeshProUGUI y_vectorLabel;
         public TextMeshProUGUI z_vectorLabel;
+        
+
         public GameObject red_sphere;
         [Tooltip("Event when the button starts being pressed")]
         public UnityEvent OnPress;
@@ -566,6 +568,18 @@ namespace Picasso
                         var cs = go.GetComponent<Line>();
                         currentLine.end.position = cs.end.position;
                     }
+                    currentLine.LineVector_X.transform.position = (currentLine.start.position + currentLine.end.position) / 2 + new Vector3(-0.015f, 0.01f, 0.0f);
+                    currentLine.LineVector_Y.transform.position = (currentLine.start.position + currentLine.end.position) / 2 + new Vector3(0.00f, 0.01f, 0.0f);
+                    currentLine.LineVector_Z.transform.position = (currentLine.start.position + currentLine.end.position) / 2 + new Vector3(0.015f, 0.01f, 0.0f);
+
+                    var vector_x =  currentLine.start_position_x - currentLine.end_position_x;
+                    var vector_y =  currentLine.start_position_y - currentLine.end_position_y;
+                    var vector_z =  currentLine.start_position_z - currentLine.end_position_z;
+
+
+                    currentLine.LineVector_X.text = ""+ (-vector_x*100f).ToString("F0");
+                    currentLine.LineVector_Z.text = ""+ (-vector_y*100f).ToString("F0");
+                    currentLine.LineVector_Y.text = ""+ (-vector_z*100f).ToString("F0");
                 }
             }
  
@@ -580,6 +594,11 @@ namespace Picasso
                 currentLine.start.GetComponent<SphereCollider>().enabled = true;
                 currentLine.tag = "Line";
                 lines.Add(currentLine);
+
+                
+
+                
+                //
 
             }
         }
@@ -604,7 +623,12 @@ namespace Picasso
                     //Erzeugung von Gameobjekt mit Linerenderer
                     currentCircle = Instantiate(circlePrefab).GetComponent<LineRenderer>();
 
+                    currentLine = currentCircle.GetComponent<Line>();
+
                     currentCircle.transform.position = painterPosition.position;
+
+
+                    currentLine.start.position = painterPosition.position;
                     start = painterPosition.position;
 
                 }

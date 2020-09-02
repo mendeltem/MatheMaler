@@ -58,6 +58,12 @@ namespace Picasso
 		public TextMeshProUGUI end_text_z;
 
 
+		public TextMeshProUGUI LineVector_X;
+		public TextMeshProUGUI LineVector_Y;
+		public TextMeshProUGUI LineVector_Z;
+		
+
+
 		public BoxCollider boxCollider;
 		public MeshCollider meshCollider;
 		
@@ -138,6 +144,8 @@ namespace Picasso
 				end_text_x.text    = " "+(end_position_x*100).ToString("F0");
 				end_text_y.text    = " "+(end_position_z*100).ToString("F0");
 				end_text_z.text    = " "+(end_position_y*100).ToString("F0");
+
+				//LineVectorLabel.transform.position = (start.position + end.position) / 2;
 
 			}
 			else if (draw_type == "free")
