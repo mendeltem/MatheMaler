@@ -12,5 +12,6 @@ namespace Picasso
         DrawLongLine,
         DrawPoints,
         DrawCircles,
+        Multiply,
     }
 }

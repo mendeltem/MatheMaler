@@ -184,11 +184,11 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 13688}
     - Class: 114
-      Script: {instanceID: 14830}
+      Script: {instanceID: 15032}
     - Class: 114
-      Script: {instanceID: 14876}
+      Script: {instanceID: 15082}
     - Class: 114
-      Script: {instanceID: 14884}
+      Script: {instanceID: 15088}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 120
@@ -736,7 +736,7 @@ ScriptsOnlyBuild:
     className: CameraOffset
   - hash:
       serializedVersion: 2
-      Hash: d27f55fe828a3052425f46f58482e532
+      Hash: 1217a5818b4066de0f8f03ae49c5a9f2
     assemblyName: Assembly-CSharp.dll
     namespaceName: Picasso
     className: Whiteboard

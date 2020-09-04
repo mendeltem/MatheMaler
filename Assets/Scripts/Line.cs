@@ -78,7 +78,7 @@ namespace Picasso
 			coord = GameObject.FindWithTag("coord");
 			lineRenderer = GetComponent<LineRenderer>();
 			boxCollider = quad.GetComponent<BoxCollider>();
-			boxCollider.enabled = false;
+			boxCollider.enabled = true;
 			meshCollider = quad.GetComponent<MeshCollider>();
 			meshCollider.enabled = false;
 			quadRenderer = quad.GetComponent<MeshRenderer>();

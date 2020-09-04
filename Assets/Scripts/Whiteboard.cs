@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections;
 using System.Globalization;
 using TMPro;
 using UnityEngine;
@@ -7,6 +8,9 @@ using UnityEngine.XR;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
 using System;
+
+
+
 
 namespace Picasso
 {
@@ -73,6 +77,7 @@ namespace Picasso
         public Toggle toggle2;
         public Toggle toggle3;
         public Toggle toggle4;
+        public Toggle toggle5;
         public GameObject Tutorial_trigger;
         public GameObject Tutorial_abutton;
         public GameObject Tutorial_bbutton;
@@ -81,6 +86,10 @@ namespace Picasso
         public Vector3 start;
         public Vector3 end;
         public Vector3 radius;
+        
+        public Vector3 factor1;
+        public Vector3 factor2;
+        
         public UnityEngine.Color temp_color;
         public GameObject line;
         public GameObject coord;
@@ -112,6 +121,8 @@ namespace Picasso
             }
 			
 			coloring = false;
+
+            toggle2.isOn = true;
 
         }
 
@@ -160,7 +171,14 @@ namespace Picasso
                     case PaintMode.DrawPoints:
                         //Punkte eintragen
                         DrawPoints();
-                        break;             
+                        break;   
+
+                    case PaintMode.Multiply:
+                        //Punkte eintragen
+                        Multiply();
+                        break;  
+
+                                  
                     
                     default:
                         break;
@@ -181,9 +199,17 @@ namespace Picasso
                 //Hilfestellung auf der Rechte Steuerung wird unsichtbar wenn mann die Tasten benutzt
                 Tutorial_abutton.SetActive(false);
 
+
+                //die Farbe der Zeichnung wird gewählt
+				var color = material.color;
+                material = new Material(material.shader);
+                material.color = color;   
+
 				coloring = true;
                 if (!IsAPressed)
                 {
+
+                    /*
                     IsAPressed = true;
                     OnPress.Invoke();
                     currentLine = Instantiate(linePrefab).GetComponent<Line>();
@@ -199,6 +225,8 @@ namespace Picasso
 
                     currentLine.material = material;
 					currentLine.draw_type = "free";
+
+                    */
                 }
             
 
@@ -209,12 +237,12 @@ namespace Picasso
                 IsAPressed = false;
                 OnRelease.Invoke();
                 
-                GameObject go = currentLine.transform.gameObject;
-                var cs = go.GetComponent<Line>();
+                //GameObject go = currentLine.transform.gameObject;
+                //var cs = go.GetComponent<Line>();
 
-                var color = material.color;
-                material = new Material(material.shader);
-                material.color = color;
+                //var color = material.color;
+                //material = new Material(material.shader);
+                //material.color = color;
                 
             }
         }
@@ -245,6 +273,7 @@ namespace Picasso
                             toggle2.isOn = false;
                             toggle3.isOn = false;
                             toggle4.isOn = false;
+                            toggle5.isOn = false;
 
                             //Modi wird auf freies Zeichnnen gewechselt
                             paintMode = PaintMode.Draw;
@@ -267,6 +296,7 @@ namespace Picasso
                             toggle2.isOn = true;
                             toggle3.isOn = false;
                             toggle4.isOn = false;
+                            toggle5.isOn = false;
 
                             //Modi wird auf Linien Zeichnnen gewechselt
                             paintMode = PaintMode.DrawingLines;
@@ -288,6 +318,7 @@ namespace Picasso
                             toggle2.isOn = false;
                             toggle3.isOn = true;
                             toggle4.isOn = false;
+                            toggle5.isOn = false;
                             //Modi wird auf Kreis Zeichnnen gewechselt
                             paintMode = PaintMode.DrawLongLine;
                         }
@@ -308,8 +339,30 @@ namespace Picasso
                             toggle2.isOn = false;
                             toggle3.isOn = false;
                             toggle4.isOn = true;
+                            toggle5.isOn = false;
                             //Modi wird auf Pinkto Zeichnnen gewechselt
                             paintMode = PaintMode.DrawPoints;
+                        }
+                    }
+                } 
+                if (hit.transform.gameObject.name == "Checkmark5")
+                {
+                    if (targetDevice.TryGetFeatureValue(CommonUsages.primaryButton,
+                        out PrimaryButtonValue) && PrimaryButtonValue)
+                    {
+                        // if start pressing, trigger event
+                        if (!IsPressed)
+                        {
+                            IsPressed = true;
+                            OnPress.Invoke();
+                            //Toggles werden markiert und demarkiert
+                            toggle.isOn = false;
+                            toggle2.isOn = false;
+                            toggle3.isOn = false;
+                            toggle4.isOn = false;
+                            toggle5.isOn = true;
+                            //Modi wird auf Pinkto Zeichnnen gewechselt
+                            paintMode = PaintMode.Multiply;
                         }
                     }
                 }               
@@ -327,12 +380,14 @@ namespace Picasso
             
 
         }
+
+
         private void Delete()
         {
             // Es löscht die vom Pinselpunkt berühten Punkt
             //Delete Lines
-            if (lines.Count > 0)
-            {
+            //if (lines.Count > 0)
+            
                 if (targetDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out bool SecondaryButtonValue) &&
                     SecondaryButtonValue)
                 {
@@ -354,8 +409,10 @@ namespace Picasso
 
 
                 }
-            }
+            
         }
+
+
         private void Draw()
         {
             //Mit draw kann frei gezeichnet werden.
@@ -384,9 +441,9 @@ namespace Picasso
                     currentLine.transform.parent = linesParent; 
                     
                     //die Farbe der Zeichnung wird gewählt
-                    var color = material.color;
-                    material = new Material(material.shader);
-                    material.color = color;    
+                    //var color = material.color;
+                    //material = new Material(material.shader);
+                    //material.color = color;    
                     currentLine.material = material;
                     
                     
@@ -466,15 +523,48 @@ namespace Picasso
                 
                 isDrawing = false;
                 //die Farbe der Zeichnung wird gewählt
+                //var color = material.color;
+                //material = new Material(material.shader);
+                //material.color = color;
+
+                //lines.Add(currentLine);
+                
+                //lognews.text = "Trigger is released\n";
+
+
+
+                                //die Farbe der Zeichnung wird gewählt
                 var color = material.color;
                 material = new Material(material.shader);
                 material.color = color;
-
-                lines.Add(currentLine);
+                /*
                 
-                //lognews.text = "Trigger is released\n";
+                //creating lineprefab
+                currentLine = Instantiate(linePrefab).GetComponent<Line>();
+                currentLine.draw_type = "straighline";
+
+                currentLine.width = width;
+                
+                if (coloring==false)
+                    currentLine.material = material;
+                
+                currentLine = Instantiate(linePrefab).GetComponent<Line>();
+                currentLine.tag = "CurrentLine";
+                currentLine.boxCollider.enabled = false;
+                currentLine.end.GetComponent<SphereCollider>().enabled = false;
+                currentLine.start.GetComponent<SphereCollider>().enabled = false;
+                //die dummy linie sollte nicht sichtbar sein für den User
+                currentLine.start.position = new Vector3(0, 0, 0);
+                currentLine.end.position = new Vector3(0, 0, 0);
+                //die Sammlung befindet sich in Dummy Parent
+                currentLine.transform.parent = DummyParent;
+                currentLine.material = material;
+
+                */
             }
         }
+
+
         private void DrawLine()
         {
             //Zeichnung von geraden Linien
@@ -491,10 +581,10 @@ namespace Picasso
                     IsPressed = true;
                     OnPress.Invoke();
 					
-                    //die Farbe der Zeichnung wird gewählt
-					var color = material.color;
+                //die Farbe der Zeichnung wird gewählt
+                    var color = material.color;
                     material = new Material(material.shader);
-                    material.color = color;    
+                    material.color = color;
                     
                     //creating lineprefab
                     currentLine = Instantiate(linePrefab).GetComponent<Line>();
@@ -504,8 +594,8 @@ namespace Picasso
                     currentLine.tag = "CurrentLine";
                     currentLine.width = width;
 					
-					if (coloring==false)
-						currentLine.material = material;
+					//if (coloring==false)
+					currentLine.material = material;
                     
                     currentLine.boxCollider.enabled = false;
                     currentLine.end.GetComponent<SphereCollider>().enabled = false;
@@ -537,7 +627,6 @@ namespace Picasso
                     currentLine.start.GetComponent<SphereCollider>().enabled = false;
 					
 					
-
                     if (lineHitObject.name == "LineRenderer")
                     {
                         //Snap on the line
@@ -593,15 +682,143 @@ namespace Picasso
                 currentLine.end.GetComponent<SphereCollider>().enabled = true;
                 currentLine.start.GetComponent<SphereCollider>().enabled = true;
                 currentLine.tag = "Line";
-                lines.Add(currentLine);
+                //lines.Add(currentLine);
 
-                
+                //die Farbe der Zeichnung wird gewählt
+                var color = material.color;
+                material = new Material(material.shader);
+                material.color = color;
 
+                /*
                 
+                //creating lineprefab
+                currentLine = Instantiate(linePrefab).GetComponent<Line>();
+                currentLine.draw_type = "straighline";
+
+                currentLine.width = width;
+                
+                if (coloring==false)
+                    currentLine.material = material;
+                
+                currentLine = Instantiate(linePrefab).GetComponent<Line>();
+                currentLine.tag = "CurrentLine";
+                currentLine.boxCollider.enabled = false;
+                currentLine.end.GetComponent<SphereCollider>().enabled = false;
+                currentLine.start.GetComponent<SphereCollider>().enabled = false;
+                //die dummy linie sollte nicht sichtbar sein für den User
+                currentLine.start.position = new Vector3(0, 0, 0);
+                currentLine.end.position = new Vector3(0, 0, 0);
+                //die Sammlung befindet sich in Dummy Parent
+                currentLine.transform.parent = DummyParent;
+                currentLine.material = material;
+
+                //lines.Add(currentLine);
+
+                */
                 //
 
             }
         }
+
+        bool multi = false;
+
+        private void Multiply()
+        {
+            //Draw Points that can snap at every (10th | 10th | 10th) points. 
+
+            if (targetDevice.TryGetFeatureValue(CommonUsages.triggerButton,
+                    out TriggerButtonValue) && TriggerButtonValue)
+            {
+                //Hilfestellung auf der Rechte Steuerung wird unsichtbar wenn mann die Tasten benutzt
+                Tutorial_trigger.SetActive(false);
+                // if start pressing, trigger event
+                if (!IsPressed)
+                {
+                    
+                    IsPressed = true;
+                    OnPress.Invoke();
+
+                    if (lineHitObject.name == "LineRenderer")
+                    {
+                    Line line = lineHitObject.transform.parent.GetComponent<Line>();
+
+
+                    var vector_x =  line.start_position_x - line.end_position_x;
+                    var vector_y =  line.start_position_y - line.end_position_y;
+                    var vector_z =  line.start_position_z - line.end_position_z;
+
+
+                    factor1 = new Vector3(-vector_x, -vector_y, -vector_z);
+
+                    lognews.text =  ""+ (factor1*100f).ToString("F0");
+
+                    multi = true;
+                    }
+                    
+                }
+                //The Button is pressed 
+                else
+                {
+                    currentLine.transform.parent = linesParent;
+                    //currentLine.draw_type = "points";
+                }
+            }
+ 
+            // check for button release
+            else if (IsPressed)
+            {
+                IsPressed = false;
+                OnRelease.Invoke();
+
+                if (lineHitObject.name == "LineRenderer" && multi == true )
+                {
+                Line line = lineHitObject.transform.parent.GetComponent<Line>();
+                var vector_x =  line.start_position_x - line.end_position_x;
+                var vector_y =  line.start_position_y - line.end_position_y;
+                var vector_z =  line.start_position_z - line.end_position_z;
+
+                factor2 = new Vector3(-vector_x, -vector_y, -vector_z);
+
+
+                //Vector3 crossProduct  = Vector3.Cross(factor1, factor2);
+
+                Vector3 crossProduct  = factor1 + factor2;
+
+                Vector3 crossProduct_new = new Vector3(crossProduct.x*100, crossProduct.y*100, crossProduct.z*100);
+
+                currentLine = Instantiate(linePrefab).GetComponent<Line>();
+                currentLine.transform.parent = linesParent;
+                currentLine.draw_type = "straighline";
+                currentLine.width = width;
+                currentLine.material = material;
+
+                currentLine.start.position = line.start.position;
+                currentLine.end.position = currentLine.start.position + crossProduct;
+                currentLine.boxCollider.enabled = true;
+                currentLine.tag = "Line";
+
+                currentLine.LineVector_X.transform.position = (currentLine.start.position + currentLine.end.position) / 2 + new Vector3(-0.015f, 0.01f, 0.0f);
+                currentLine.LineVector_Y.transform.position = (currentLine.start.position + currentLine.end.position) / 2 + new Vector3(0.00f, 0.01f, 0.0f);
+                currentLine.LineVector_Z.transform.position = (currentLine.start.position + currentLine.end.position) / 2 + new Vector3(0.015f, 0.01f, 0.0f);
+
+
+
+
+                var n_vector_x =  currentLine.start.position.x - currentLine.end.position.x;
+                var n_vector_y =  currentLine.start.position.y - currentLine.end.position.y;
+                var n_vector_z =  currentLine.start.position.z - currentLine.end.position.z;
+
+                lognews.text =  ""+ ((currentLine.end.position-currentLine.start.position)*100).ToString("F0");
+
+
+                currentLine.LineVector_X.text = ""+ (-n_vector_x*100f).ToString("F0");
+                currentLine.LineVector_Z.text = ""+ (-n_vector_y*100f).ToString("F0");
+                currentLine.LineVector_Y.text = ""+ (-n_vector_z*100f).ToString("F0");
+                }
+                
+            }
+        }
+
 
         private void DrawCircle()
         {
@@ -694,14 +911,22 @@ namespace Picasso
                 IsPressed = false;
                 OnRelease.Invoke();
 
-                MeshCollider meshCollider = currentCircle.gameObject.AddComponent<MeshCollider>();
+                //MeshCollider meshCollider = currentCircle.gameObject.AddComponent<MeshCollider>();
 
-                Mesh mesh = new Mesh();
-                currentCircle.BakeMesh(mesh, true);
-                meshCollider.sharedMesh = mesh;
+                //Mesh mesh = new Mesh();
+                //currentCircle.BakeMesh(mesh, true);
+                //meshCollider.sharedMesh = mesh;
+
+
+                var color = material.color;
+                material = new Material(material.shader);
+                material.color = color;
             }
         }
         
+       
+
+
         int snap = 0;
 
         private void DrawPoints()
@@ -778,7 +1003,7 @@ namespace Picasso
                 OnRelease.Invoke();
                 currentLine.boxCollider.enabled = true;
                 currentLine.start.GetComponent<SphereCollider>().enabled = true;
-                lines.Add(currentLine);
+                //lines.Add(currentLine);
                 
             }
         }
