@@ -13,5 +13,7 @@ namespace Picasso
         DrawPoints,
         DrawCircles,
         Multiply,
+        Surface,
+
     }
 }

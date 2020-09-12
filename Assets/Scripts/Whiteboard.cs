@@ -10,15 +10,14 @@ using UnityEngine.XR.Interaction.Toolkit;
 using System;
 
 
-
-
 namespace Picasso
 {
+
     [System.Serializable]
     public class PrimaryButtonEvent : UnityEvent<bool>
     {
     }
-
+    [RequireComponent(typeof(MeshFilter))]
     public class Whiteboard : MonoBehaviour
     {
         public PaintMode paintMode;
@@ -29,6 +28,7 @@ namespace Picasso
         private InputDevice targetDevice;
         public GameObject linePrefab;
         public GameObject circlePrefab;
+        public GameObject surfacePrefab;
         public GameObject rightController;
         //Pinsel Punkt zum Zeichnen
         public Transform painterPosition => rightController.transform.Find("RightControllerHitBox").transform;
@@ -42,6 +42,8 @@ namespace Picasso
         public float x;
         public List<Line> lines;
         public Line currentLine;
+
+        public MeshGenerator currentSurface;
         public Material material;
         public float width;
         public float radiuslength;
@@ -78,6 +80,7 @@ namespace Picasso
         public Toggle toggle3;
         public Toggle toggle4;
         public Toggle toggle5;
+        public Toggle toggle6;
         public GameObject Tutorial_trigger;
         public GameObject Tutorial_abutton;
         public GameObject Tutorial_bbutton;
@@ -86,7 +89,7 @@ namespace Picasso
         public Vector3 start;
         public Vector3 end;
         public Vector3 radius;
-        
+
         public Vector3 factor1;
         public Vector3 factor2;
         
@@ -97,6 +100,13 @@ namespace Picasso
         double painter_position_x; 
         double painter_position_y;
         double painter_position_z;
+
+        
+        float surface_with;
+        float surface_height;
+
+        //index for surface
+        int index = 1;
 
         void Avake()
         {
@@ -124,6 +134,7 @@ namespace Picasso
 
             toggle2.isOn = true;
 
+
         }
 
         private void Update()
@@ -147,6 +158,7 @@ namespace Picasso
 
             //}
 
+            lognews.text =  ""+ (index).ToString();
 
             if (toolboxHitObject == null)
             {
@@ -178,8 +190,12 @@ namespace Picasso
                         Multiply();
                         break;  
 
-                                  
-                    
+                    case PaintMode.Surface:
+                        //Punkte eintragen
+                        Surface();
+                        break;  
+
+ 
                     default:
                         break;
                 }
@@ -187,10 +203,6 @@ namespace Picasso
             }
             //zum Debuggen 
             //lognews.text = lineHitObject.name;
-
-
-
-
             //Erzeugt ein Dummy Linie, dessen Farbe sich ändern sollte statt des vor kurzem erzeugten Linie
             //Es da ist um ein Bug zu bekämpfen
             if (targetDevice.TryGetFeatureValue(CommonUsages.primaryButton,
@@ -198,37 +210,14 @@ namespace Picasso
             {
                 //Hilfestellung auf der Rechte Steuerung wird unsichtbar wenn mann die Tasten benutzt
                 Tutorial_abutton.SetActive(false);
-
-
                 //die Farbe der Zeichnung wird gewählt
 				var color = material.color;
                 material = new Material(material.shader);
                 material.color = color;   
+                index = 1;
+                
 
-				coloring = true;
-                if (!IsAPressed)
-                {
-
-                    /*
-                    IsAPressed = true;
-                    OnPress.Invoke();
-                    currentLine = Instantiate(linePrefab).GetComponent<Line>();
-                    currentLine.tag = "CurrentLine";
-                    currentLine.boxCollider.enabled = false;
-                    currentLine.end.GetComponent<SphereCollider>().enabled = false;
-                    currentLine.start.GetComponent<SphereCollider>().enabled = false;
-                    //die dummy linie sollte nicht sichtbar sein für den User
-                    currentLine.start.position = new Vector3(0, 0, 0);
-                    currentLine.end.position = new Vector3(0, 0, 0);
-                    //die Sammlung befindet sich in Dummy Parent
-                    currentLine.transform.parent = DummyParent;
-
-                    currentLine.material = material;
-					currentLine.draw_type = "free";
-
-                    */
-                }
-            
+				coloring = true; 
 
             }  // Beim loslassen
             else if (IsAPressed)
@@ -237,15 +226,117 @@ namespace Picasso
                 IsAPressed = false;
                 OnRelease.Invoke();
                 
-                //GameObject go = currentLine.transform.gameObject;
-                //var cs = go.GetComponent<Line>();
-
-                //var color = material.color;
-                //material = new Material(material.shader);
-                //material.color = color;
-                
+ 
             }
         }
+
+
+        private void Surface()
+        {
+
+            //Zeichnen von Ebenen
+            if (targetDevice.TryGetFeatureValue(CommonUsages.triggerButton,
+                    out TriggerButtonValue) && TriggerButtonValue)
+            {
+
+                //Hilfestellung auf der Rechte Steuerung wird unsichtbar wenn mann die Tasten benutzt
+				Tutorial_trigger.SetActive(false);
+				isDrawing = true;
+
+                var color = material.color;
+                material = new Material(material.shader);
+                material.color = color;
+
+                // if start pressing, trigger event
+                if (!IsPressed)
+                {
+                    IsPressed = true;
+                    OnPress.Invoke();
+
+                    if(index == 1){
+                        currentSurface = Instantiate(surfacePrefab).GetComponent<MeshGenerator>();
+                        currentSurface.material = material;
+                        currentSurface.index = 1;
+                       
+                    }
+                
+                    if(index == 2){
+                        currentSurface.index = 2;
+                    }
+                    
+                    if(index == 3){
+                        var meshRenderer = currentSurface.GetComponent<MeshRenderer>();
+                        meshRenderer.enabled = true;
+                        currentSurface.index = 3;
+                    }
+                    if(index == 4){
+                        currentSurface.index = 4;
+                    }
+                    
+                }else
+                {
+
+                    if(currentSurface.index == 1){
+                        currentSurface.point1.position = painterPosition.position;
+                    }
+                
+                    if(currentSurface.index == 2){
+                        currentSurface.point2.position = painterPosition.position;
+
+                        if (lineHitObject.name == "Start")
+                        {
+                            //Start Snap
+                            GameObject go = lineHitObject.transform.parent.gameObject;
+                                
+                            var cs = go.GetComponent<Line>();
+                            currentSurface.point2.position = cs.start.position;
+                        }
+
+                        if (lineHitObject.name == "End")
+                        {
+                            //End Snap
+                            GameObject go = lineHitObject.transform.parent.gameObject;
+                                
+                            var cs = go.GetComponent<Line>();
+                            currentSurface.point2.position = cs.end.position;
+                        }
+
+
+                    }
+                    
+                    if(currentSurface.index == 3){
+                        currentSurface.point3.position = painterPosition.position;
+                    }
+
+                    if(currentSurface.index == 4){
+                        currentSurface.point4.position = painterPosition.position;
+                    }
+                }
+            }            // check for button release
+            else if (IsPressed)
+            {
+                isDrawing = false;
+                IsPressed = false;
+                OnRelease.Invoke();
+
+                if(currentSurface.index == 1){
+                    index = 2;
+                }
+                if(currentSurface.index == 2){
+                    index = 3;
+                }
+
+                if(currentSurface.index == 3) {
+                    index = 4;
+                }
+
+                if(currentSurface.index == 4) {
+                    index = 1;
+                }                 
+
+            }
+        }
+
 
 
         private void RaycastToolbox()
@@ -274,6 +365,7 @@ namespace Picasso
                             toggle3.isOn = false;
                             toggle4.isOn = false;
                             toggle5.isOn = false;
+                            toggle6.isOn = false;
 
                             //Modi wird auf freies Zeichnnen gewechselt
                             paintMode = PaintMode.Draw;
@@ -297,6 +389,7 @@ namespace Picasso
                             toggle3.isOn = false;
                             toggle4.isOn = false;
                             toggle5.isOn = false;
+                            toggle6.isOn = false;
 
                             //Modi wird auf Linien Zeichnnen gewechselt
                             paintMode = PaintMode.DrawingLines;
@@ -319,6 +412,7 @@ namespace Picasso
                             toggle3.isOn = true;
                             toggle4.isOn = false;
                             toggle5.isOn = false;
+                            toggle6.isOn = false;
                             //Modi wird auf Kreis Zeichnnen gewechselt
                             paintMode = PaintMode.DrawLongLine;
                         }
@@ -340,6 +434,7 @@ namespace Picasso
                             toggle3.isOn = false;
                             toggle4.isOn = true;
                             toggle5.isOn = false;
+                            toggle6.isOn = false;
                             //Modi wird auf Pinkto Zeichnnen gewechselt
                             paintMode = PaintMode.DrawPoints;
                         }
@@ -361,11 +456,34 @@ namespace Picasso
                             toggle3.isOn = false;
                             toggle4.isOn = false;
                             toggle5.isOn = true;
+                            toggle6.isOn = false;
                             //Modi wird auf Pinkto Zeichnnen gewechselt
                             paintMode = PaintMode.Multiply;
                         }
                     }
-                }               
+                }     
+                if (hit.transform.gameObject.name == "Checkmark6")
+                {
+                    if (targetDevice.TryGetFeatureValue(CommonUsages.primaryButton,
+                        out PrimaryButtonValue) && PrimaryButtonValue)
+                    {
+                        // if start pressing, trigger event
+                        if (!IsPressed)
+                        {
+                            IsPressed = true;
+                            OnPress.Invoke();
+                            //Toggles werden markiert und demarkiert
+                            toggle.isOn = false;
+                            toggle2.isOn = false;
+                            toggle3.isOn = false;
+                            toggle4.isOn = false;
+                            toggle5.isOn = false;
+                            toggle6.isOn = true;
+                            //Modi wird auf Pinkto Zeichnnen gewechselt
+                            paintMode = PaintMode.Surface;
+                        }
+                    }
+                }            
                 if (hit.transform.gameObject.layer == 8  ) {
                     toolboxHitObject = hit.collider.gameObject;
                     //Laser wird sichtbar wenn wenn der Toolbox getroffen wird
@@ -800,8 +918,6 @@ namespace Picasso
                 currentLine.LineVector_X.transform.position = (currentLine.start.position + currentLine.end.position) / 2 + new Vector3(-0.015f, 0.01f, 0.0f);
                 currentLine.LineVector_Y.transform.position = (currentLine.start.position + currentLine.end.position) / 2 + new Vector3(0.00f, 0.01f, 0.0f);
                 currentLine.LineVector_Z.transform.position = (currentLine.start.position + currentLine.end.position) / 2 + new Vector3(0.015f, 0.01f, 0.0f);
-
-
 
 
                 var n_vector_x =  currentLine.start.position.x - currentLine.end.position.x;
