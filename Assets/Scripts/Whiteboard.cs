@@ -158,7 +158,9 @@ namespace Picasso
 
             //}
 
-            lognews.text =  ""+ (index).ToString();
+            //lognews.text =  ""+ (index).ToString();
+
+            lognews.text = lineHitObject.name;
 
             if (toolboxHitObject == null)
             {
@@ -215,7 +217,27 @@ namespace Picasso
                 material = new Material(material.shader);
                 material.color = color;   
                 index = 1;
-                
+        
+
+                if (currentSurface != null){
+                    currentSurface.point1.GetComponent<MeshRenderer>().enabled = false;
+                    currentSurface.point2.GetComponent<MeshRenderer>().enabled = false;
+                    currentSurface.point3.GetComponent<MeshRenderer>().enabled = false;
+                    currentSurface.point4.GetComponent<MeshRenderer>().enabled = false;
+                    currentSurface.point5.GetComponent<MeshRenderer>().enabled = false;
+                    currentSurface.point6.GetComponent<MeshRenderer>().enabled = false;
+                    currentSurface.point7.GetComponent<MeshRenderer>().enabled = false;
+                    currentSurface.point8.GetComponent<MeshRenderer>().enabled = false;
+                    currentSurface.point9.GetComponent<MeshRenderer>().enabled = false;
+                    currentSurface.point10.GetComponent<MeshRenderer>().enabled = false;
+                    //currentSurface = Instantiate(surfacePrefab).GetComponent<MeshGenerator>();
+                    //currentSurface.material = material;
+
+                    currentSurface.index = 1;
+                    currentSurface = null;
+
+                }
+
 
 				coloring = true; 
 
@@ -257,7 +279,9 @@ namespace Picasso
                         currentSurface = Instantiate(surfacePrefab).GetComponent<MeshGenerator>();
                         currentSurface.material = material;
                         currentSurface.index = 1;
-                       
+
+                        
+
                     }
                 
                     if(index == 2){
@@ -272,12 +296,60 @@ namespace Picasso
                     if(index == 4){
                         currentSurface.index = 4;
                     }
-                    
+                    if(index == 5){
+                        currentSurface.index = 5;
+                    }
+                    if(index == 6){
+                        currentSurface.index = 6;
+                    }
+                    if(index == 7){
+                        currentSurface.index = 7;
+                    }
+                    if(index == 8){
+                        currentSurface.index = 8;
+                    }
+                    if(index == 9){
+                        currentSurface.index = 9;
+                    }
+                    if(index == 10){
+                        currentSurface.index = 10;
+
+                        currentSurface.point1.GetComponent<MeshRenderer>().enabled = false;
+                        currentSurface.point2.GetComponent<MeshRenderer>().enabled = false;
+                        currentSurface.point3.GetComponent<MeshRenderer>().enabled = false;
+                        currentSurface.point4.GetComponent<MeshRenderer>().enabled = false;
+                        currentSurface.point5.GetComponent<MeshRenderer>().enabled = false;
+                        currentSurface.point6.GetComponent<MeshRenderer>().enabled = false;
+                        currentSurface.point7.GetComponent<MeshRenderer>().enabled = false;
+                        currentSurface.point8.GetComponent<MeshRenderer>().enabled = false;
+                        currentSurface.point9.GetComponent<MeshRenderer>().enabled = false;
+                        currentSurface.point10.GetComponent<MeshRenderer>().enabled = false;
+                    }
+
                 }else
                 {
-
+ 
                     if(currentSurface.index == 1){
                         currentSurface.point1.position = painterPosition.position;
+
+                        if (lineHitObject.name == "Start")
+                        {
+                            //Start Snap
+                            GameObject go = lineHitObject.transform.parent.gameObject;
+                                
+                            var cs = go.GetComponent<Line>();
+                            currentSurface.point1.position = cs.start.position;
+                        }
+
+                        if (lineHitObject.name == "End")
+                        {
+                            //End Snap
+                            GameObject go = lineHitObject.transform.parent.gameObject;
+                                
+                            var cs = go.GetComponent<Line>();
+                            currentSurface.point1.position = cs.end.position;
+                        }
+
                     }
                 
                     if(currentSurface.index == 2){
@@ -306,10 +378,185 @@ namespace Picasso
                     
                     if(currentSurface.index == 3){
                         currentSurface.point3.position = painterPosition.position;
+
+                        
+                        if (lineHitObject.name == "Start")
+                        {
+                            //Start Snap
+                            GameObject go = lineHitObject.transform.parent.gameObject;
+                                
+                            var cs = go.GetComponent<Line>();
+                            currentSurface.point3.position = cs.start.position;
+                        }
+
+                        if (lineHitObject.name == "End")
+                        {
+                            //End Snap
+                            GameObject go = lineHitObject.transform.parent.gameObject;
+                                
+                            var cs = go.GetComponent<Line>();
+                            currentSurface.point3.position = cs.end.position;
+                        }
                     }
 
                     if(currentSurface.index == 4){
                         currentSurface.point4.position = painterPosition.position;
+
+
+                        if (lineHitObject.name == "Start")
+                        {
+                            //Start Snap
+                            GameObject go = lineHitObject.transform.parent.gameObject;
+                                
+                            var cs = go.GetComponent<Line>();
+                            currentSurface.point4.position = cs.start.position;
+                        }
+
+                        if (lineHitObject.name == "End")
+                        {
+                            //End Snap
+                            GameObject go = lineHitObject.transform.parent.gameObject;
+                                
+                            var cs = go.GetComponent<Line>();
+                            currentSurface.point4.position = cs.end.position;
+                        }
+                    }
+                    
+                    if(currentSurface.index == 5){
+                        currentSurface.point5.position = painterPosition.position;
+
+
+                        if (lineHitObject.name == "Start")
+                        {
+                            //Start Snap
+                            GameObject go = lineHitObject.transform.parent.gameObject;
+                                
+                            var cs = go.GetComponent<Line>();
+                            currentSurface.point5.position = cs.start.position;
+                        }
+
+                        if (lineHitObject.name == "End")
+                        {
+                            //End Snap
+                            GameObject go = lineHitObject.transform.parent.gameObject;
+                                
+                            var cs = go.GetComponent<Line>();
+                            currentSurface.point5.position = cs.end.position;
+                        }
+                    }
+                    if(currentSurface.index == 6){
+                        currentSurface.point6.position = painterPosition.position;
+
+
+                        if (lineHitObject.name == "Start")
+                        {
+                            //Start Snap
+                            GameObject go = lineHitObject.transform.parent.gameObject;
+                                
+                            var cs = go.GetComponent<Line>();
+                            currentSurface.point6.position = cs.start.position;
+                        }
+
+                        if (lineHitObject.name == "End")
+                        {
+                            //End Snap
+                            GameObject go = lineHitObject.transform.parent.gameObject;
+                                
+                            var cs = go.GetComponent<Line>();
+                            currentSurface.point6.position = cs.end.position;
+                        }
+                    }
+                    if(currentSurface.index == 7){
+                        currentSurface.point7.position = painterPosition.position;
+
+
+                        if (lineHitObject.name == "Start")
+                        {
+                            //Start Snap
+                            GameObject go = lineHitObject.transform.parent.gameObject;
+                                
+                            var cs = go.GetComponent<Line>();
+                            currentSurface.point7.position = cs.start.position;
+                        }
+
+                        if (lineHitObject.name == "End")
+                        {
+                            //End Snap
+                            GameObject go = lineHitObject.transform.parent.gameObject;
+                                
+                            var cs = go.GetComponent<Line>();
+                            currentSurface.point7.position = cs.end.position;
+                        }
+                    }
+                    if(currentSurface.index == 8){
+                        currentSurface.point8.position = painterPosition.position;
+
+
+                        if (lineHitObject.name == "Start")
+                        {
+                            //Start Snap
+                            GameObject go = lineHitObject.transform.parent.gameObject;
+                                
+                            var cs = go.GetComponent<Line>();
+                            currentSurface.point8.position = cs.start.position;
+                        }
+
+                        if (lineHitObject.name == "End")
+                        {
+                            //End Snap
+                            GameObject go = lineHitObject.transform.parent.gameObject;
+                                
+                            var cs = go.GetComponent<Line>();
+                            currentSurface.point8.position = cs.end.position;
+                        }
+                    }
+
+                    if(currentSurface.index == 9){
+                        currentSurface.point9.position = painterPosition.position;
+
+
+                        if (lineHitObject.name == "Start")
+                        {
+                            //Start Snap
+                            GameObject go = lineHitObject.transform.parent.gameObject;
+                                
+                            var cs = go.GetComponent<Line>();
+                            currentSurface.point9.position = cs.start.position;
+                        }
+
+                        if (lineHitObject.name == "End")
+                        {
+                            //End Snap
+                            GameObject go = lineHitObject.transform.parent.gameObject;
+                                
+                            var cs = go.GetComponent<Line>();
+                            currentSurface.point9.position = cs.end.position;
+                        }
+                    }
+
+
+
+                    if(currentSurface.index == 10){
+                        currentSurface.point10.position = painterPosition.position;
+
+
+                        if (lineHitObject.name == "Start")
+                        {
+                            //Start Snap
+                            GameObject go = lineHitObject.transform.parent.gameObject;
+                                
+                            var cs = go.GetComponent<Line>();
+                            currentSurface.point10.position = cs.start.position;
+                        }
+
+                        if (lineHitObject.name == "End")
+                        {
+                            //End Snap
+                            GameObject go = lineHitObject.transform.parent.gameObject;
+                                
+                            var cs = go.GetComponent<Line>();
+                            currentSurface.point10.position = cs.end.position;
+                        }
                     }
                 }
             }            // check for button release
@@ -331,9 +578,29 @@ namespace Picasso
                 }
 
                 if(currentSurface.index == 4) {
-                    index = 1;
+                    index = 5;
                 }                 
+                if(currentSurface.index == 5){
+                    index = 6;
+                }
+                if(currentSurface.index == 6){
+                    index = 7;
+                }
 
+                if(currentSurface.index == 7) {
+                    index = 8;
+                }
+
+                if(currentSurface.index == 8) {
+                    index = 9;
+                }  
+                if(currentSurface.index == 9) {
+                    index = 10;
+                }
+
+                if(currentSurface.index == 10) {
+                    index = 1;
+                }  
             }
         }
 
@@ -523,6 +790,8 @@ namespace Picasso
                         //Es macht den Kreis unsichtbar
                         GameObject line = lineHitObject.transform.gameObject;
                         line.SetActive(false);
+
+                        
                     }
 
 
